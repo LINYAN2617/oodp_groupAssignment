@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class UserModel  implements Serializable {
 	private String UserID;
@@ -10,8 +11,11 @@ public class UserModel  implements Serializable {
 	private String Gender;
 	private String Nationality;
 	private char UserType;
+	private Date  AccessTimeStart;
 	
-	public UserModel (String UserID,String Password,String FirstName,String LastName,String Gender,String Nationality,char UserType) {
+	private Date AccessTimeEnd;
+	
+	public UserModel (String UserID,String Password,String FirstName,String LastName,String Gender,String Nationality,char UserType, Date AccessTimeStart, Date AccessTimeEnd) {
 		this.UserID = UserID;
 		this.Password = Password;
 		this.FirstName = FirstName;
@@ -19,7 +23,8 @@ public class UserModel  implements Serializable {
 		this.Gender = Gender;
 		this.Nationality = Nationality;
 		this.UserType = UserType;
-		
+		this.AccessTimeStart = AccessTimeStart;
+		this.AccessTimeEnd = AccessTimeEnd;
 	}
 	
 	public boolean validatePwd(String Pwd) {
@@ -45,5 +50,11 @@ public class UserModel  implements Serializable {
 	public String getFullName() {
 		return FirstName + " " + LastName;
 	}
-
+	
+	public Date getAccessTimeStart() {
+		return AccessTimeStart;
+	}
+	public Date getAccessTimeEnd() {
+		return AccessTimeEnd;
+	}
 }

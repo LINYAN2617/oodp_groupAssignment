@@ -1,0 +1,3 @@
+CourseIndex|Type|Group|Day|Time|Venue
+1|Lec|1|Monday|1830-2120|LT4
+2|Sem|1|Tuesday|1830-2120|LT6

@@ -1,4 +1,8 @@
 package main;
+import java.util.Date;
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.GregorianCalendar;
 import java.io.BufferedReader;
 import java.io.Console;
 import java.io.IOException;
@@ -17,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
 import model.StudentModel;
 import model.UserModel;
 import model.AdminModel;
-public class Function_LoginHandling {
+public class LoginController {
 	
 	private static String secretKey = "tBJCPuoiynMYps8W";
 	private static String salt = "YxzDI5ie9uqGicjk";
@@ -86,18 +90,19 @@ public class Function_LoginHandling {
 	public StudentModel validateStud(String ID, String Pwd, ArrayList<StudentModel> stud) {
 	
 		StudentModel returnresult = null;
-	
+
 		 for(int i =0 ; i< stud.size(); i++) {
-			
-			 if(stud.get(i).getUserID().equals(ID)) {
+				 if(stud.get(i).getUserID().equals(ID)) {
+					 
+					 String encryptedString = encrypt(Pwd) ;
 
-				 String encryptedString = encrypt(Pwd) ;
-
-				 if(stud.get(i).validatePwd(encryptedString)) {
-					 returnresult = stud.get(i);
-					
+					 if(stud.get(i).validatePwd(encryptedString)) {
+						 returnresult = stud.get(i);
+						
+					 }
 				 }
-			 }
+			
+			 
 		 }
 		 
 		 return returnresult;

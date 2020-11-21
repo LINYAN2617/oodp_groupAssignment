@@ -115,10 +115,16 @@ public class DBController {
 				// get individual 'fields' of the string separated by SEPARATOR
 				StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
 
-				long CourseIndex = Long.parseLong(star.nextToken().trim());	// first token
+				int CourseIndex = Integer.parseInt(star.nextToken().trim());	// first token
 				String  UserID = star.nextToken().trim();	// second token
-				String  ApplyTime = star.nextToken().trim();
-				
+				Date  ApplyTime;
+				try {
+					ApplyTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(star.nextToken().trim());
+				} catch (ParseException e) {
+					ApplyTime = null;
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				WaitListingModel WaitItem = new WaitListingModel(CourseIndex,UserID,ApplyTime); 
 				
 				// add to UserModel list
@@ -138,10 +144,16 @@ public class DBController {
 				// get individual 'fields' of the string separated by SEPARATOR
 				StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
 
-				long CourseIndex = Long.parseLong(star.nextToken().trim());	// first token
+				int CourseIndex = Integer.parseInt(star.nextToken().trim());	// first token
 				String  UserID = star.nextToken().trim();	// second token
-				String  RegisterTime = star.nextToken().trim();
-				
+				Date  RegisterTime;
+				try {
+					RegisterTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(star.nextToken().trim());
+				} catch (ParseException e) {
+					RegisterTime = null;
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				AllocatedListingModel AllocateItem = new AllocatedListingModel(CourseIndex,UserID,RegisterTime); 
 				
 				// add to UserModel list
@@ -221,6 +233,17 @@ public class DBController {
 		}
 		return AList;
 	}
+	public static ArrayList<AllocatedListingModel> readAllocateListingByCourseIndex(int CourseIndex){
+		ArrayList<AllocatedListingModel> AList = new ArrayList<AllocatedListingModel>();
+		for(int i=0; i< AllocatedListing.size(); i++) {
+			
+			if(AllocatedListing.get(i).getCourseIndex() == CourseIndex) {
+				AList.add(AllocatedListing.get(i));
+			}
+		
+		}
+		return AList;
+	}
 	
 	public static ArrayList<WaitListingModel> readAllWaitListingByStudentID(String StudentID){
 		ArrayList<WaitListingModel> wList = new ArrayList<WaitListingModel>();
@@ -247,6 +270,7 @@ public class DBController {
 		}
 		return tList;
 	}
+	
 	
 	
 	

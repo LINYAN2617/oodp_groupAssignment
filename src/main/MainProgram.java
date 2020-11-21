@@ -71,8 +71,7 @@ public class MainProgram {
 					
 					isloginAsAdmin = true;
 					LoggedAdmin = checkIsAdmin;
-
-					DisplayAdminScreen();
+					
 				} 
 			}
 			
@@ -81,7 +80,7 @@ public class MainProgram {
 			}else if(isloginAsStud == true) {
 				DisplayStudentScreen();
 			}
-
+			
 		}
 		
 		

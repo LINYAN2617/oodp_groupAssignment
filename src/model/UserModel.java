@@ -50,6 +50,18 @@ public class UserModel  implements Serializable {
 	public String getFullName() {
 		return FirstName + " " + LastName;
 	}
+	public String getFirstName() {
+		return FirstName;
+	}
+	public String getLastName() {
+		return FirstName;
+	}
+	public String getGender() {
+		return Gender;
+	}
+	public String getNationality() {
+		return Nationality;
+	}
 	
 	public Date getAccessTimeStart() {
 		return AccessTimeStart;

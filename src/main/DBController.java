@@ -17,6 +17,7 @@ import model.AllocatedListingModel;
 import model.CourseModel;
 import model.StudentModel;
 import model.TimeTableModel;
+import model.UserModel;
 import model.WaitListingModel;
 
 public class DBController {
@@ -25,12 +26,15 @@ public class DBController {
 	public static ArrayList<WaitListingModel> WaitListing;
 	public static ArrayList<AllocatedListingModel> AllocatedListing;
 	public static ArrayList<CourseModel> CourseModelListing;
+	public static ArrayList<TimeTableModel> TimeTableListing;
 	
 	public DBController() {
 		try {
 			
 			WaitListing = readWaitListing("FileDB/WaitingListing.txt");
 			AllocatedListing = readAllocateListing("FileDB/AllocatedListing.txt");
+
+			TimeTableListing = readTimeTableListing("FileDB/TimeTable.txt");
 			CourseModelListing =  readCourseListing("FileDB/Course.txt");
 			
 			ArrayList readuser = new ArrayList();
@@ -38,7 +42,6 @@ public class DBController {
 			student = (ArrayList<StudentModel>) readuser.get(1);
 			admin = (ArrayList<AdminModel>) readuser.get(0);
 			
-
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -85,7 +88,7 @@ public class DBController {
 				if(UserType == 'S') {
 					StudentModel Student = new StudentModel(UserID, Password,FirstName,LastName,Gender,Nationality,UserType,AccessTimeStart,AccessTimeEnd);
 					Student.AllocateListing = 	readAllocateListingByStudentID(Student.getUserID());
-					Student.WaitListing = 	readAlWaitListingByStudentID(Student.getUserID());
+					Student.WaitListing = 	readAllWaitListingByStudentID(Student.getUserID());
 					student.add(Student) ;
 				}else if(UserType == 'A') {
 					AdminModel Admin = new AdminModel(UserID, Password,FirstName,LastName,Gender,Nationality,UserType,AccessTimeStart,AccessTimeEnd);
@@ -167,6 +170,8 @@ public class DBController {
 				int  AU = Integer.parseInt(star.nextToken().trim());	
 				
 				CourseModel AllocateItem = new CourseModel(IndexNumber,CourseCode,CourseName,CourseType,Vacancy,School,AU); 
+				AllocateItem.TimeTableList = readTimeTableByCourseIndex(AllocateItem.getIndexNumber());
+				
 				
 				// add to UserModel list
 
@@ -217,7 +222,7 @@ public class DBController {
 		return AList;
 	}
 	
-	public static ArrayList<WaitListingModel> readAlWaitListingByStudentID(String StudentID){
+	public static ArrayList<WaitListingModel> readAllWaitListingByStudentID(String StudentID){
 		ArrayList<WaitListingModel> wList = new ArrayList<WaitListingModel>();
 		for(int i=0; i< WaitListing.size(); i++) {
 			
@@ -231,6 +236,18 @@ public class DBController {
 	
 	
 	
+	public static ArrayList<TimeTableModel> readTimeTableByCourseIndex(int CourseID){
+		ArrayList<TimeTableModel> tList = new ArrayList<TimeTableModel>();
+		for(int i=0; i< TimeTableListing.size(); i++) {
+			
+			if(TimeTableListing.get(i).getIndexNumber() == CourseID) {
+				tList.add(TimeTableListing.get(i));
+			}
+		
+		}
+		return tList;
+	}
+	
 	
 	
 	
@@ -240,22 +257,35 @@ public class DBController {
 	
 
 	// -----------------------------------------
-  // an example of saving
-//public static void saveProfessors(String filename, List al) throws IOException {
-	//	List alw = new ArrayList() ;// to store Professors data
+	public static void saveNewStudents(String filename, List al) throws IOException {
+		List alw = new ArrayList() ;// to store Professors data
 
-      //  for (int i = 0 ; i < al.size() ; i++) {
-		//		Professor prof = (Professor)al.get(i);
-		//		StringBuilder st =  new StringBuilder() ;
-		//		st.append(prof.getName().trim());
-		//		st.append(SEPARATOR);
-		//		st.append(prof.getEmail().trim());
-		//		st.append(SEPARATOR);
-		//		st.append(prof.getContact());
-		//		alw.add(st.toString()) ;
-		//	}
-		//	write(filename,alw);
-//	}
+        for (int i = 0 ; i < al.size() ; i++) {
+				StudentModel stud = (StudentModel)al.get(i);
+				StringBuilder st =  new StringBuilder() ;
+				st.append(stud.getUserID().trim());
+				st.append(SEPARATOR);
+				st.append(stud.getPassword().trim());
+				st.append(SEPARATOR);
+				st.append(stud.getFirstName());
+				st.append(SEPARATOR);
+				st.append(stud.getLastName());
+				st.append(SEPARATOR);
+				st.append(stud.getGender());
+				st.append(SEPARATOR);
+				st.append(stud.getNationality());
+				st.append(SEPARATOR);
+				st.append(stud.getUserType());
+				st.append(SEPARATOR);
+				st.append(stud.getAccessTimeStart());
+				st.append(SEPARATOR);
+				st.append(stud.getAccessTimeEnd());
+				st.append(SEPARATOR);
+				st.append(stud.getUserType());
+				alw.add(st.toString()) ;
+			}
+			write(filename,alw);
+	}
 
 	
 	

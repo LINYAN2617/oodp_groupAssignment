@@ -14,7 +14,7 @@ public class TimeTableModel {
 		this.Venue = Venue;
 	}
 	
-	public long getIndexNumber() {
+	public int getIndexNumber() {
 		return IndexNumber;
 	}
 	

@@ -7,7 +7,7 @@ public class CourseModel {
 	private String CourseCode;
 	private String CourseName;
 	private String CourseType;
-	private ArrayList<TimeTableModel> TimeTableList;
+	public ArrayList<TimeTableModel> TimeTableList;
 	private int Vacancy;
 	private String School;
 	private int AU;
@@ -51,11 +51,6 @@ public class CourseModel {
 		return School;
 	}
 	
-	public ArrayList<TimeTableModel> getTimeTable() {
-		return TimeTableList;
-	}
-	
-	
 	public void setCourseCode(String CourseCode) {
 		this.CourseCode =CourseCode;
 	}
@@ -77,8 +72,6 @@ public class CourseModel {
 	public void setSchool(String School) {
 		this.School =School;
 	}
-	public void setTimeTable(String IndexNumber) {
-		
-	}
+
 
 }

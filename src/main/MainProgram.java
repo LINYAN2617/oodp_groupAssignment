@@ -12,6 +12,7 @@ public class MainProgram {
 	
 	public static ArrayList<StudentModel> student = new ArrayList<StudentModel>();
 	public static ArrayList<AdminModel> admin = new ArrayList<AdminModel>();
+	public static ArrayList<StudentModel> course = new ArrayList<StudentModel>();
 	public static boolean isloginAsAdmin;
 	public static boolean isloginAsStud;
 	public static StudentModel LoggedStudent;
@@ -26,6 +27,15 @@ public class MainProgram {
 			readfile = LoadData.readUsers("FileDB/User.txt");
 			student = (ArrayList<StudentModel>) readfile.get(1);
 			admin = (ArrayList<AdminModel>) readfile.get(0);
+	
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.print("Error while loading files");
+		}
+		
+		try {
+			readfile = LoadData.readCourse("FileDB/Course.txt");
+			course = (ArrayList<StudentModel>) readfile;
 	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -74,6 +84,7 @@ public class MainProgram {
 
 						isloginAsStud = true;
 						LoggedStudent =  checkIsStud;
+						
 
 					}
 				}else {

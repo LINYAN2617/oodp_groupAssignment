@@ -50,7 +50,28 @@ public class TextDB {
 	        alr.add(student);
 			return alr ;
 	}
+	
+	
+	public static ArrayList readCourse(String filename) throws IOException {
+		// read String from text file
+		ArrayList stringArray = (ArrayList)read(filename);
+		ArrayList<StudentModel> course = new ArrayList<StudentModel>() ;// to store Professors data
+		ArrayList alrCour = new ArrayList();
+        for (int i = 1 ; i < stringArray.size() ; i++) {
+        	
+				String st = (String)stringArray.get(i);
+				// get individual 'fields' of the string separated by SEPARATOR
+				StringTokenizer starCour = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
 
+				String  CourseCode = starCour.nextToken().trim();	// first token
+				String  CourserName = starCour.nextToken().trim();	// first token
+				int  Index = starCour.nextToken().trim().charAt(0);
+				// add to UserModel list
+				
+			}
+        	alrCour.add(course);
+			return alrCour ;
+	}
   // an example of saving
 //public static void saveProfessors(String filename, List al) throws IOException {
 	//	List alw = new ArrayList() ;// to store Professors data

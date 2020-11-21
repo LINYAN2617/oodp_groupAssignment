@@ -5,10 +5,13 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class StudentModel extends UserModel {
+	public static ArrayList<StudentModel> course = new ArrayList<StudentModel>();
+	
 	public StudentModel(String UserID, String Password, String FirstName, String LastName, String Gender,
 			String Nationality, char UserType, Date AccessTimeStart, Date AccessTimeEnd) {
 		super(UserID, Password, FirstName, LastName, Gender, Nationality, UserType, AccessTimeStart, AccessTimeEnd);
 		// TODO Auto-generated constructor stub
+		
 	}
 
 	public String MatricNumber;

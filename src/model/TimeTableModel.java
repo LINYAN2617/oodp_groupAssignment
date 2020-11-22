@@ -57,4 +57,16 @@ public class TimeTableModel {
 		this.Venue = Venue;
 		
 	}
+	public int getGroup() {
+		return Group;
+		
+	}
+	public void setGroup(int Group) {
+		this.Group = Group;
+		
+	}
+	
+	public String getVenue() {
+		return Venue;
+	}
 }

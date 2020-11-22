@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class StudentModel extends UserModel {
@@ -62,25 +63,28 @@ public class StudentModel extends UserModel {
 		
 	}
 	
-	public void RemoveWaitListing(int CourseIndex) {
-		for (WaitListingModel al : WaitListing) { 
-			if (al.getCourseIndex() == CourseIndex) { 
-				AllocateListing.remove(al); 
-			} 
-		}
-	
-		
+	public void RemoveWaitListing(int CourseIndex) {	
+		Iterator<WaitListingModel> iterator = WaitListing.iterator();
+
+		while (iterator.hasNext()){
+			WaitListingModel mp = iterator.next();
+
+		     if (mp.getCourseIndex() == CourseIndex){
+		         iterator.remove();    // You can do the modification here.
+		     }
+		 }
 	}
 	public void RemoveAllocateListing(int CourseIndex) {
 	
-		for (AllocatedListingModel al : AllocateListing) { 
-			if (al.getCourseIndex() == CourseIndex) { 
-				AllocateListing.remove(al); 
-			} 
-		}
-	
-		
-		
+		Iterator<AllocatedListingModel> iterator = AllocateListing.iterator();
+
+		while (iterator.hasNext()){
+			AllocatedListingModel mp = iterator.next();
+
+		     if (mp.getCourseIndex() == CourseIndex){
+		         iterator.remove();    // You can do the modification here.
+		     }
+		 }
 	}
 	
 }

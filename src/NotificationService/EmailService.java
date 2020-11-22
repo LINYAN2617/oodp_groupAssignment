@@ -22,12 +22,6 @@ public class EmailService implements Notification {
 		String Recipent =  "";
 		String Subject =  "";
 		String EmailMessage =  "";
-
-		System.out.println(c.get(0));
-		System.out.println(c.get(1));
-		System.out.println(SendingInfo.get(0));
-		System.out.println(SendingInfo.get(1));
-		System.out.println(SendingInfo.get(2));
 		
 		Recipent = SendingInfo.get(0);
 		Subject = SendingInfo.get(1);

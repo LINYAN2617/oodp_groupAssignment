@@ -1,0 +1,1 @@
+set Classpath=%Classpath%;D:\ntu\year2\CZ2002 java\groupAssignment\GroupAssignment\EmailService\javax.mail.jar;

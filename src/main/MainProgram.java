@@ -1,13 +1,12 @@
 package main;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
+import DBRepo.AdminRepo;
 import DBRepo.DBContext;
 import model.*;
 
 import java.io.Console;
-import java.io.IOException;
 public class MainProgram {
 	
 	public static boolean isloginAsAdmin;
@@ -15,21 +14,20 @@ public class MainProgram {
 	public static StudentModel LoggedStudent;
 	public static AdminModel LoggedAdmin;
 	public static DBContext LoadData = new DBContext();
-	
+	public static LoginController LoginHandling = new LoginController();
 	public MainProgram(){
 		
 	}
 	
 	public static void main(String[] args) {
 		
-		if(LoadData.admin.size() == 0 ) {
+		if(AdminRepo.GetAdmin().size() == 0 ) {
 			System.out.print("Please initial an admin in User DB.");
 		}else {
 			
 			String LoginID;
 			String Password;
 			Console cons = System.console();
-			LoginController LoginHandling = new LoginController();
 			//System.out.println(LoginHandling.encrypt("1234"));
 			System.out.println ("Welcome to My STudent Automated Registration System (MySTARS)");
 			while (isloginAsAdmin == false && isloginAsStud == false) {
@@ -50,10 +48,10 @@ public class MainProgram {
 					Password = LoginHandling.getPasswordMasked(cons, "Password:");
 				}
 				
-				AdminModel checkIsAdmin = LoginHandling.validateAdmin(LoginID,Password,LoadData.admin);
+				AdminModel checkIsAdmin = LoginHandling.validateAdmin(LoginID,Password);
 				if( checkIsAdmin == null) {
 					
-					StudentModel checkIsStud = LoginHandling.validateStud(LoginID,Password,LoadData.student);
+					StudentModel checkIsStud = LoginHandling.validateStud(LoginID,Password);
 					
 					if(checkIsStud == null) {
 						System.out.println ("Failed for validation try again:");
@@ -93,7 +91,7 @@ public class MainProgram {
 	
 	public static void DisplayAdminScreen() {
 		
-		AdminController AdminFunc = new AdminController(LoadData,LoggedAdmin);
+		AdminController AdminFunc = new AdminController(LoggedAdmin);
 		AdminFunc.StartAdminPage();
 		
 	}
@@ -101,7 +99,7 @@ public class MainProgram {
 	
 	public static void DisplayStudentScreen() {
 		
-		StudentController StudFunc = new StudentController(LoadData,LoggedStudent);
+		StudentController StudFunc = new StudentController(LoggedStudent);
 		StudFunc.StartStudPage();
 		
 	}

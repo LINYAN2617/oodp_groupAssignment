@@ -1,6 +1,5 @@
 package main;
 
-import java.io.IOException;
 import java.util.*;
 
 import model.AllocatedListingModel;
@@ -8,21 +7,18 @@ import model.CourseModel;
 import model.StudentModel;
 import model.WaitListingModel;
 import DBRepo.AllocatedListingRepo;
-
-import DBRepo.WaitListingRepo;
 import DBRepo.CourseRepo;
-import DBRepo.DBContext;
-
-import DBRepo.FileHandle;
+import NotificationService.EmailService;
+import NotificationService.Notification;
 public class StudentController {
 	
 	private static StudentModel LoggedStudent;
-	
-	
-	public StudentController(DBContext loadData,StudentModel LoggedStudent) {
+	private static Notification EmailService = new EmailService();
+	public StudentController(StudentModel LoggedStudent) {
 		
 		StudentController.LoggedStudent=LoggedStudent;
 	}
+	
 	
 	public void StartStudPage() {
 	
@@ -54,42 +50,59 @@ public class StudentController {
 					System.out.println("Course Not Found, Please try again!");
 				}else {
 					returnCModel.getIndexNumber();
-					System.out.format("|%-13s | %-40s | %-10s | %-20s| %-4s |\n", "Course Code", "Course Name","Vacancy", "School", "AU");
-					System.out.format("|%-13s | %-40s | %-10s | %-20s| %-4s |\n", returnCModel.getCourseCode(), returnCModel.getCourseName(),returnCModel.getVacancy(), returnCModel.getSchool(),returnCModel.getAU());
+					int taken = AllocatedListingRepo.GetTakenSlotByCourseIndex(courseIndex);
+					int available = returnCModel.getVacancy() - taken;
+					System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", "Course Code", "Course Name","Max Vacancy","Available Slot", "School", "AU");
+					System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", returnCModel.getCourseCode(), returnCModel.getCourseName(),returnCModel.getVacancy(), available ,returnCModel.getSchool(),returnCModel.getAU());
+				
 					System.out.println("\nPlease select an option:\n" +
 							"1. Confirm to register?\n"+
 							"2. Cancel\n");
-				
+					
 					if(scan.nextInt() == 1) {
-						int isRegistered = CheckIsregisteredCourse(returnCModel.getIndexNumber(), LoggedStudent.getUserID());
+						int isRegistered = CheckIsregisteredCourse(returnCModel.getIndexNumber());
 						if (isRegistered == -1) {
-							
 							
 							String returnMsg = Stud_addCourse(LoggedStudent.getUserID(), returnCModel);
 							System.out.println(returnMsg);
+							
+							ArrayList<String> SendInfo = new ArrayList<String>();
+							SendInfo.add(LoggedStudent.Email);
+							SendInfo.add("Course registration - Successfully register to Course Index (" + returnCModel.getIndexNumber() + "), Course Name (" + returnCModel.getCourseName() + ")" );
+							SendInfo.add("Dear " + LoggedStudent.getFullName() +  ", \n\n" + "Successfully register to Course Index (" + returnCModel.getIndexNumber() + "), Course Name (" + returnCModel.getCourseName() + ")");
+							
+							
+							EmailService.send(SendInfo);
+							
+							System.out.println("\n ---------------------------------------------------------------");
 						}else if(isRegistered == 1) {
 							System.out.println("You already registered the course");
 
 							System.out.println("---------------------------------------------- \n");
-						}else {
+						}else if(isRegistered == 2) {
 							System.out.println("You already registered the course and is under the waiting list");
 
 							System.out.println("---------------------------------------------- \n");
+						}else {
+							System.out.println("You already registered up to 21 AU!");
+
+							System.out.println("---------------------------------------------- \n");
+					
 						}
 					}
 				}
 				break;					
 			case 2: 
-				DisplayRegisteredListReturnAU(LoggedStudent.getUserID());
+				DisplayRegisteredListReturnAU();
 				System.out.println("Select course to drop: ");
 				int dropIndex = scan.nextInt(); 
 				Stud_dropCourse(LoggedStudent.getUserID(), dropIndex);
 				break;
 				
 			case 3:
-				int totalAU = DisplayRegisteredListReturnAU(LoggedStudent.getUserID());
+				int totalAU = DisplayRegisteredListReturnAU();
 				
-				DisplayWaitlist(LoggedStudent.getUserID());
+				DisplayWaitlist();
 				System.out.println("Total registered AU: " + totalAU + "\n");
 				break;
 				
@@ -100,8 +113,11 @@ public class StudentController {
 				if(returnCModelVa == null) {
 					System.out.println("Course Not Found, Please try again!");
 				}else {
-					System.out.format("|%-13s | %-40s | %-10s | %-20s| %-4s |\n", "Course Code", "Course Name","Vacancy", "School", "AU");
-					System.out.format("|%-13s | %-40s | %-10s | %-20s| %-4s |\n", returnCModelVa.getCourseCode(), returnCModelVa.getCourseName(),returnCModelVa.getVacancy(), returnCModelVa.getSchool(),returnCModelVa.getAU());
+					
+					int taken = AllocatedListingRepo.GetTakenSlotByCourseIndex(courseIndex);
+					int available = returnCModelVa.getVacancy() - taken;
+					System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", "Course Code", "Course Name","Max Vacancy","Available Slot", "School", "AU");
+					System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", returnCModelVa.getCourseCode(), returnCModelVa.getCourseName(),returnCModelVa.getVacancy(), available ,returnCModelVa.getSchool(),returnCModelVa.getAU());
 				}
 					break;
 			case 5:
@@ -114,6 +130,7 @@ public class StudentController {
 			}
 		}
 		System.out.println("Program exiting......");
+		
 	}
 	
 	
@@ -124,14 +141,19 @@ public class StudentController {
 		//show course info
 		Date date = new Date();
 		
-		if(CModel.getVacancy() <= AllocatedListingRepo.readAllocateListingByCourseIndex(CModel.getIndexNumber()).size()){
+		if(CModel.getVacancy() <= AllocatedListingRepo.GetTakenSlotByCourseIndex(CModel.getIndexNumber())){
 			WaitListingModel wlist = new WaitListingModel(CModel.getIndexNumber(),StudID,date);
-			DBRepo.WaitListingRepo.addWaitListing(wlist);
+			DBRepo.WaitListingRepo.add(wlist);
+			LoggedStudent.AddWaitListing(wlist);
+			
 			returnMessage = "Course Vancancy is full, your request is added in waiting list.";
 		}else{
 			AllocatedListingModel alist = new AllocatedListingModel(CModel.getIndexNumber(),StudID,date);
 			AllocatedListingRepo.add(alist);
+			LoggedStudent.AddAllocateListing(alist);
+			
 			returnMessage = "Successfully registered!";
+
 		};
 		
 		return returnMessage;
@@ -144,17 +166,20 @@ public class StudentController {
 		for (int i = 0; i<AList.size(); i++) {
 			if (AList.get(i).getCourseIndex() == dropIndex) {
 				AllocatedListingRepo.remove(AList.get(i));
+				LoggedStudent.RemoveAllocateListing(dropIndex);
 				System.out.println("Course has dropped. \n");
 				return;
 			}
 		}
+		
+		
 		System.out.println("Invaild index,please try again.\n");
 	}
 	
-	public int DisplayRegisteredListReturnAU(String StudentID) {
+	public int DisplayRegisteredListReturnAU() {
 		int totalAU =0;
 		ArrayList<AllocatedListingModel> AList = new ArrayList<AllocatedListingModel>();
-		AList = AllocatedListingRepo.readAllocateListingByStudentID(StudentID);
+		AList = LoggedStudent.GetAllocateListing();
 		
 		System.out.format("|%-15s | %-4s | %-15s | %-10s | %10s | \n", "Course Code", "AU","Course Type", "Index", "Status");
 		for (int i = 0; i<AList.size(); i++) {
@@ -167,9 +192,9 @@ public class StudentController {
 		return totalAU;
 	}
 	
-	public void DisplayWaitlist(String StudentID) {
+	public void DisplayWaitlist() {
 		ArrayList<WaitListingModel> wList = new ArrayList<WaitListingModel>();
-		wList = DBRepo.WaitListingRepo.readAllWaitListingByStudentID(StudentID);
+		wList =  LoggedStudent.GetWaitListing();
 		
 		for (int i = 0; i<wList.size(); i++) {
 			int courseIndex = wList.get(i).getCourseIndex();
@@ -179,13 +204,26 @@ public class StudentController {
 		}
 	}
 	
-	public int CheckIsregisteredCourse(int CourseIndex, String StudentID) {
+	public int CheckIsregisteredCourse(int CourseIndex) {
+		int AU = 0;
+		for (AllocatedListingModel al : LoggedStudent.GetAllocateListing()) { 
+			if (al.getCourseIndex() == CourseIndex) { 
+				return 1;
+			} 
+			AU += CourseRepo.GetCourseByIndexNumber(al.getCourseIndex()).getAU();
+		}
 		
-		if(AllocatedListingRepo.readAllocateListingByStudentIDByCourseIndex(CourseIndex, StudentID).size() >0) {
-			return 1;
-		}else if(DBRepo.WaitListingRepo.readAllWaitListingByStudentIDByCourseIndex(CourseIndex, StudentID).size() >0) {
-			return 2;
-		};
+		for (WaitListingModel wl : LoggedStudent.GetWaitListing()) { 
+			if (wl.getCourseIndex() == CourseIndex) { 
+				return 2;
+			} 
+
+			AU += CourseRepo.GetCourseByIndexNumber(wl.getCourseIndex()).getAU();
+		}
+		
+		if(AU >= 21) {
+			return 3;
+		}
 		
 		return -1;
 	}

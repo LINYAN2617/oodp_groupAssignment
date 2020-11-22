@@ -1,3 +1,0 @@
-UserID|Index|RegisteredTime
-TEST123|01|21 Nov 2020, 14:22
-LIAN0121|02|21 Nov 2020, 13:22

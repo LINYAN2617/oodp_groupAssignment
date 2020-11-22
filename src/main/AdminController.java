@@ -1,22 +1,19 @@
 package main;
-import DBRepo.DBContext;
 import DBRepo.CourseRepo;
 
-import DBRepo.FileHandle;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 import model.AdminModel;
 import model.CourseModel;
 import model.TimeTableModel;
-import model.StudentModel;
+
+
+import NotificationService.EmailService;
 public class AdminController {
 
 	private static CourseRepo CourseRepo;
 	private static AdminModel LoggedAdmin;
-	public AdminController(DBContext loadData,AdminModel LoggedAdmin) {
+	public AdminController(AdminModel LoggedAdmin) {
 			AdminController.LoggedAdmin=LoggedAdmin;
 			
 	}

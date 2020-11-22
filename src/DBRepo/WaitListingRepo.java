@@ -31,13 +31,13 @@ public class WaitListingRepo {
 		}
 		return wList;
 	}
-	public static void addWaitListing(WaitListingModel WModel) {
+	public static void add(WaitListingModel WModel) {
 		DBContext.WaitListing.add(WModel);
-		saveWaitListing(DBContext.WaitListing);
+		save(DBContext.WaitListing);
 	}
 	
 	
-	public static void saveWaitListing(List<WaitListingModel> al)  {
+	public static void save(List<WaitListingModel> al)  {
 		
 		List<String> alw = new ArrayList<String>() ;
 		alw.add("CourseIndex|UserID|ApplyTime");

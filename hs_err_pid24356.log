@@ -18,7 +18,7 @@
 #     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
 # This output file may be truncated or incomplete.
 #
-#  Out of Memory Error (./open/src/hotspot/os/windows/os_windows.cpp:3315), pid=16468, tid=20024
+#  Out of Memory Error (./open/src/hotspot/os/windows/os_windows.cpp:3315), pid=24356, tid=23704
 #
 # JRE version:  (14.0.2+12) (build )
 # Java VM: Java HotSpot(TM) 64-Bit Server VM (14.0.2+12-46, mixed mode, sharing, tiered, compressed oops, g1 gc, windows-amd64)
@@ -27,16 +27,16 @@
 
 ---------------  S U M M A R Y ------------
 
-Command Line: -Dfile.encoding=Cp1252 --module-path=D:\ntu\year2\CZ2002 java\groupAssignment\GroupAssignment\bin -Djdk.module.main=GroupAssignment GroupAssignment/main.MainProgram
+Command Line: -Dfile.encoding=Cp1252 main.MainProgram
 
 Host: Intel(R) Core(TM) i7-8550U CPU @ 1.80GHz, 8 cores, 15G,  Windows 10 , 64 bit Build 18362 (10.0.18362.329)
-Time: Sun Nov 22 14:31:25 2020 Malay Peninsula Standard Time elapsed time: 0 seconds (0d 0h 0m 0s)
+Time: Sun Nov 22 19:19:45 2020 Malay Peninsula Standard Time elapsed time: 0 seconds (0d 0h 0m 0s)
 
 ---------------  T H R E A D  ---------------
 
-Current thread (0x000001ce3f03d000):  JavaThread "Unknown thread" [_thread_in_vm, id=20024, stack(0x000000ca71c00000,0x000000ca71d00000)]
+Current thread (0x000002a3ed3ae000):  JavaThread "Unknown thread" [_thread_in_vm, id=23704, stack(0x000000f15d300000,0x000000f15d400000)]
 
-Stack: [0x000000ca71c00000,0x000000ca71d00000]
+Stack: [0x000000f15d300000,0x000000f15d400000]
 Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
 V  [jvm.dll+0x5f8a9a]
 V  [jvm.dll+0x74247a]
@@ -72,16 +72,16 @@ _java_thread_list=0x00007ff9e1ac3038, length=0, elements={
 Java Threads: ( => current thread )
 
 Other Threads:
-  0x000001ce3f0a6000 GCTaskThread "GC Thread#0" [stack: 0x000000ca71d00000,0x000000ca71e00000] [id=21516]
-  0x000001ce3f0c7800 ConcurrentGCThread "G1 Main Marker" [stack: 0x000000ca71e00000,0x000000ca71f00000] [id=9604]
-  0x000001ce3f0c9000 ConcurrentGCThread "G1 Conc#0" [stack: 0x000000ca71f00000,0x000000ca72000000] [id=12904]
+  0x000002a3ed416800 GCTaskThread "GC Thread#0" [stack: 0x000000f15d400000,0x000000f15d500000] [id=20972]
+  0x000002a3ed438800 ConcurrentGCThread "G1 Main Marker" [stack: 0x000000f15d500000,0x000000f15d600000] [id=23088]
+  0x000002a3ed43a000 ConcurrentGCThread "G1 Conc#0" [stack: 0x000000f15d600000,0x000000f15d700000] [id=13540]
 
 [error occurred during error reporting (printing all threads), id 0xc0000005, EXCEPTION_ACCESS_VIOLATION (0xc0000005) at pc=0x00007ff9e12f1257]
 
 VM state:not at safepoint (not fully initialized)
 
 VM Mutex/Monitor currently owned by a thread:  ([mutex/lock_event])
-[0x000001ce3f039060] Heap_lock - owner thread: 0x000001ce3f03d000
+[0x000002a3ed3a9e00] Heap_lock - owner thread: 0x000002a3ed3ae000
 
 Heap address: 0x0000000701800000, size: 4072 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
 Narrow klass base: 0x0000000000000000, Narrow klass shift: 0
@@ -102,8 +102,8 @@ Internal exceptions (0 events):
 No events
 
 Events (2 events):
-Event: 0.007 Loaded shared library C:\Program Files\Java\jdk-14.0.2\bin\java.dll
-Event: 0.007 Loaded shared library C:\Program Files\Java\jdk-14.0.2\bin\zip.dll
+Event: 0.005 Loaded shared library C:\Program Files\Java\jdk-14.0.2\bin\java.dll
+Event: 0.005 Loaded shared library C:\Program Files\Java\jdk-14.0.2\bin\zip.dll
 
 
 Dynamic libraries:
@@ -112,8 +112,8 @@ Dynamic libraries:
 0x00007ffa211d0000 - 0x00007ffa21282000 	C:\WINDOWS\System32\KERNEL32.DLL
 0x00007ffa1f0d0000 - 0x00007ffa1f373000 	C:\WINDOWS\System32\KERNELBASE.dll
 0x00007ffa1e290000 - 0x00007ffa1e38a000 	C:\WINDOWS\System32\ucrtbase.dll
-0x00007ffa0fbf0000 - 0x00007ffa0fc08000 	C:\Program Files\Java\jdk-14.0.2\bin\jli.dll
 0x00007ffa0fb10000 - 0x00007ffa0fb25000 	C:\Program Files\Java\jdk-14.0.2\bin\VCRUNTIME140.dll
+0x00007ffa0fbf0000 - 0x00007ffa0fc08000 	C:\Program Files\Java\jdk-14.0.2\bin\jli.dll
 0x00007ffa1ffe0000 - 0x00007ffa20083000 	C:\WINDOWS\System32\ADVAPI32.dll
 0x00007ffa1f5b0000 - 0x00007ffa1f64e000 	C:\WINDOWS\System32\msvcrt.dll
 0x00007ffa1f920000 - 0x00007ffa1f9b7000 	C:\WINDOWS\System32\sechost.dll
@@ -121,8 +121,8 @@ Dynamic libraries:
 0x00007ffa20090000 - 0x00007ffa20224000 	C:\WINDOWS\System32\USER32.dll
 0x00007ffa10f20000 - 0x00007ffa111a5000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.18362.535_none_e6c3b34713100821\COMCTL32.dll
 0x00007ffa1e260000 - 0x00007ffa1e281000 	C:\WINDOWS\System32\win32u.dll
-0x00007ffa20360000 - 0x00007ffa20696000 	C:\WINDOWS\System32\combase.dll
 0x00007ffa1f660000 - 0x00007ffa1f686000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffa20360000 - 0x00007ffa20696000 	C:\WINDOWS\System32\combase.dll
 0x00007ffa1e390000 - 0x00007ffa1e524000 	C:\WINDOWS\System32\gdi32full.dll
 0x00007ffa1e7d0000 - 0x00007ffa1e850000 	C:\WINDOWS\System32\bcryptPrimitives.dll
 0x00007ffa1f030000 - 0x00007ffa1f0ce000 	C:\WINDOWS\System32\msvcp_win.dll
@@ -134,7 +134,7 @@ Dynamic libraries:
 0x00007ffa0ae10000 - 0x00007ffa0ae19000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
 0x00007ffa19f70000 - 0x00007ffa19f94000 	C:\WINDOWS\SYSTEM32\WINMM.dll
 0x00007ffa1fea0000 - 0x00007ffa1ff0f000 	C:\WINDOWS\System32\WS2_32.dll
-0x00007ffa19cf0000 - 0x00007ffa19d1d000 	C:\WINDOWS\SYSTEM32\WINMMBASE.dll
+0x00007ffa19cf0000 - 0x00007ffa19d1d000 	C:\WINDOWS\SYSTEM32\winmmbase.dll
 0x00007ffa1e6d0000 - 0x00007ffa1e71a000 	C:\WINDOWS\System32\cfgmgr32.dll
 0x00007ffa1e240000 - 0x00007ffa1e251000 	C:\WINDOWS\System32\kernel.appcore.dll
 0x00007ffa18cf0000 - 0x00007ffa18cfa000 	C:\Program Files\Java\jdk-14.0.2\bin\jimage.dll
@@ -147,9 +147,9 @@ dbghelp: loaded successfully - version: 4.0.5 - missing functions: none
 symbol engine: initialized successfully - sym options: 0x614 - pdb path: .;C:\Program Files\Java\jdk-14.0.2\bin;C:\WINDOWS\SYSTEM32;C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.18362.535_none_e6c3b34713100821;C:\Program Files\Java\jdk-14.0.2\bin\server
 
 VM Arguments:
-jvm_args: -Dfile.encoding=Cp1252 --module-path=D:\ntu\year2\CZ2002 java\groupAssignment\GroupAssignment\bin -Djdk.module.main=GroupAssignment 
-java_command: GroupAssignment/main.MainProgram
-java_class_path (initial): <not set>
+jvm_args: -Dfile.encoding=Cp1252 
+java_command: main.MainProgram
+java_class_path (initial): D:\ntu\year2\CZ2002 java\groupAssignment\GroupAssignment\bin;D:\ntu\year2\CZ2002 java\groupAssignment\GroupAssignment\EmailService\javax.mail.jar;D:\ntu\year2\CZ2002 java\groupAssignment\GroupAssignment\EmailService\activation.jar
 Launcher Type: SUN_STANDARD
 
 [Global flags]
@@ -180,7 +180,7 @@ Log output configuration:
  #1: stderr all=off uptime,level,tags
 
 Environment Variables:
-PATH=C:/Program Files/Java/jdk-14.0.2/bin/server;C:/Program Files/Java/jdk-14.0.2/bin;C:\Program Files\Java\jdk-14.0.2\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\OpenVPN\bin;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Windows\System32\OpenSSH;C:\Program Files\Microsoft\Web Platform Installer\;D:\xampp\php;C:\ProgramData\ComposerSetup\bin;D:\python\Scripts\;D:\python\;C:\Users\XuChaoLiang\AppData\Local\Microsoft\WindowsApps;D:\Microsoft VS Code\bin;C:\Users\XuChaoLiang\AppData\roaming\Python\Python36\scripts;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\mingw64\bin;C:\WINDOWS\system32;C:\Users\XuChaoLiang\AppData\Local\GitHubDesktop\bin;C:\Users\XuChaoLiang\AppData\Roaming\Composer\vendor\bin;C:\WINDOWS\system32;
+PATH=C:/Program Files/Java/jdk-14.0.2/bin/server;C:/Program Files/Java/jdk-14.0.2/bin;C:\Program Files\Java\jdk-14.0.2\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\OpenVPN\bin;C:\Program Files\Git\cmd;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Windows\System32\OpenSSH;C:\Program Files\Microsoft\Web Platform Installer\;D:\xampp\php;C:\ProgramData\ComposerSetup\bin;D:\python\Scripts\;D:\python\;C:\Users\XuChaoLiang\AppData\Local\Microsoft\WindowsApps;D:\Microsoft VS Code\bin;C:\Users\XuChaoLiang\AppData\roaming\Python\Python36\scripts;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\Program Files\Git\mingw64\bin;C:\WINDOWS\system32;C:\Users\XuChaoLiang\AppData\Local\GitHubDesktop\bin;C:\Users\XuChaoLiang\AppData\Roaming\Composer\vendor\bin;C:\Users\XuChaoLiang\Desktop;
 USERNAME=XuChaoLiang
 OS=Windows_NT
 PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 10, GenuineIntel
@@ -190,12 +190,12 @@ PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 10, GenuineIntel
 ---------------  S Y S T E M  ---------------
 
 OS: Windows 10 , 64 bit Build 18362 (10.0.18362.329)
-OS uptime: 4 days 2:48 hours
+OS uptime: 4 days 7:36 hours
 
 CPU:total 8 (initial active 8) (4 cores per cpu, 2 threads per core) family 6 model 142 stepping 10, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx, fma
 
-Memory: 4k page, system-wide physical 16281M (8456M free)
-TotalPageFile size 17094M (AvailPageFile size 131M)
+Memory: 4k page, system-wide physical 16281M (8083M free)
+TotalPageFile size 17094M (AvailPageFile size 18M)
 current process WorkingSet (physical memory assigned to process): 10M, peak: 10M
 current process commit charge ("private bytes"): 61M, peak: 317M
 

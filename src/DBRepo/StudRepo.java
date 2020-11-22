@@ -5,12 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.AdminModel;
 import model.StudentModel;
 
 public class StudRepo {
-	public StudRepo(DBContext DBContext) {
+	public static ArrayList<StudentModel> GetStud() {
+		
+		return DBContext.student;
 	}
-	public static void saveStudent(String filename, List<?> al)  {
+	
+	
+	
+	public static void save(String filename, List<?> al)  {
 		
 		List<String> alw = new ArrayList<String>() ;
 		alw.add("UserID|Password|FirstName|LastName|Gender|Nationality|UserType|AccessTimeStart|AccessTimeEnd");

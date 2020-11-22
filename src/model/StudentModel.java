@@ -25,6 +25,24 @@ public class StudentModel extends UserModel {
 		this.MatricNumber = MatricNumber;
 	}
 	
+	public void setEmail(String Email) {
+		this.Email = Email;
+	}
+	public void setPhoneNumber(String PhoneNumber) {
+		this.PhoneNumber = PhoneNumber;
+	}
+	
+	public String getMatricNumber() {
+		return MatricNumber;
+	}
+	
+	public String getEmail() {
+		return Email;
+	}
+	public String getPhoneNumber() {
+		return PhoneNumber;
+	}
+	
 	public void AddWaitListing(WaitListingModel wlist) {
 		WaitListing.add(wlist);
 		
@@ -33,7 +51,36 @@ public class StudentModel extends UserModel {
 		AllocateListing.add(alist);
 		
 	}
-
 	
+	public  ArrayList<WaitListingModel> GetWaitListing() {
+		return WaitListing;
+		
+	}
+	public ArrayList<AllocatedListingModel> GetAllocateListing() {
+		return AllocateListing;
+		
+		
+	}
+	
+	public void RemoveWaitListing(int CourseIndex) {
+		for (WaitListingModel al : WaitListing) { 
+			if (al.getCourseIndex() == CourseIndex) { 
+				AllocateListing.remove(al); 
+			} 
+		}
+	
+		
+	}
+	public void RemoveAllocateListing(int CourseIndex) {
+	
+		for (AllocatedListingModel al : AllocateListing) { 
+			if (al.getCourseIndex() == CourseIndex) { 
+				AllocateListing.remove(al); 
+			} 
+		}
+	
+		
+		
+	}
 	
 }

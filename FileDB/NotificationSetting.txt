@@ -1,0 +1,2 @@
+NotificationType|FirstCredentialsDetail|SecondCredentialsDetail
+Email|liangxuchao|liangxuchao123

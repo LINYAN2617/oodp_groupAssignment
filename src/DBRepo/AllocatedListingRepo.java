@@ -80,5 +80,14 @@ public class AllocatedListingRepo {
 		return AList;
 	}
 	
-	
+	public static int GetTakenSlotByCourseIndex(int courseIndex) {
+		int taken = 0;
+			 for (int i = 0 ; i < DBContext.AllocatedListing.size() ; i++) {
+			        
+					if (DBContext.AllocatedListing.get(i).getCourseIndex()==courseIndex) {
+						taken++;
+					}
+				}
+		return taken;
+	}
 }

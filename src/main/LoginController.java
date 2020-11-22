@@ -1,14 +1,6 @@
 package main;
-import java.util.Date;
-import java.util.Calendar;
-import java.text.SimpleDateFormat;
-import java.util.GregorianCalendar;
-import java.io.BufferedReader;
 import java.io.Console;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.security.spec.KeySpec;
-import java.util.ArrayList;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
@@ -18,15 +10,16 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import DBRepo.AdminRepo;
+import DBRepo.StudRepo;
 import model.StudentModel;
-import model.UserModel;
 import model.AdminModel;
 public class LoginController {
 	
 	private static String secretKey = "tBJCPuoiynMYps8W";
 	private static String salt = "YxzDI5ie9uqGicjk";
 	
-	public static String getPasswordMasked(Console cons, String msg)
+	public String getPasswordMasked(Console cons, String msg)
     {
         char[] passwd;
         while (true) {
@@ -41,7 +34,7 @@ public class LoginController {
         }
     }
 
-	public static String encrypt(String strToEncrypt) 
+	public String encrypt(String strToEncrypt) 
 	{
 		
 	    try
@@ -65,7 +58,7 @@ public class LoginController {
 	    return null;
 	}
 	
-	public static String decrypt(String strToDecrypt) {
+	public String decrypt(String strToDecrypt) {
 	    try
 	    {
 	        byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -86,17 +79,17 @@ public class LoginController {
 	    return null;
 	}
 	
-	public StudentModel validateStud(String ID, String Pwd, ArrayList<StudentModel> stud) {
+	public StudentModel validateStud(String ID, String Pwd) {
 	
 		StudentModel returnresult = null;
 
-		 for(int i =0 ; i< stud.size(); i++) {
-				 if(stud.get(i).getUserID().equals(ID)) {
+		 for(int i =0 ; i< StudRepo.GetStud().size(); i++) {
+				 if(StudRepo.GetStud().get(i).getUserID().equals(ID)) {
 					 
 					 String encryptedString = encrypt(Pwd) ;
 
-					 if(stud.get(i).validatePwd(encryptedString)) {
-						 returnresult = stud.get(i);
+					 if(StudRepo.GetStud().get(i).validatePwd(encryptedString)) {
+						 returnresult = StudRepo.GetStud().get(i);
 						
 					 }
 				 }
@@ -107,18 +100,18 @@ public class LoginController {
 		 return returnresult;
 	}
 	
-	public AdminModel validateAdmin(String ID, String Pwd, ArrayList<AdminModel> admin) {
+	public AdminModel validateAdmin(String ID, String Pwd) {
 		
 		AdminModel returnresult = null;
 	
-		 for(int i =0 ; i< admin.size(); i++) {
+		 for(int i =0 ; i< AdminRepo.GetAdmin().size(); i++) {
 			
-			 if(admin.get(i).getUserID().equals(ID)) {
+			 if(AdminRepo.GetAdmin().get(i).getUserID().equals(ID)) {
 
 				 String encryptedString = encrypt(Pwd) ;
 
-				 if(admin.get(i).validatePwd(encryptedString)) {
-					 returnresult = admin.get(i);
+				 if(AdminRepo.GetAdmin().get(i).validatePwd(encryptedString)) {
+					 returnresult = AdminRepo.GetAdmin().get(i);
 					
 				 }
 			 }
@@ -126,6 +119,7 @@ public class LoginController {
 		 
 		 return returnresult;
 	}
+	
 	
 	
 }

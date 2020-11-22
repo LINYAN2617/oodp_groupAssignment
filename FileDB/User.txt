@@ -1,3 +1,3 @@
-UserID|Password|FirstName|LastName|Gender|Nationality|UserType|AccessTimeStart|AccessTimeEnd
-LIAN0121|nSIBakABX5kVAXDgOhPBsA==|Xu Chao|Liang|Male|Chinese|S|2020-11-20 08:00:00.000|2020-11-23 08:00:00.000
-TEST123|nSIBakABX5kVAXDgOhPBsA==|TEST|TEST|Male|Chinese|A|2020-11-20 08:00:00.000|2020-11-23 08:00:00.000
+UserID|Password|FirstName|LastName|Gender|Nationality|UserType|AccessTimeStart|AccessTimeEnd|Email|MatricNumber|PhoneNumber
+LIAN0121|nSIBakABX5kVAXDgOhPBsA==|Xu Chao|Liang|Male|Chinese|S|2020-11-20 08:00:00.000|2020-11-23 08:00:00.000|liangxuchao@gmail.com|U180000A|88886772
+TEST123|nSIBakABX5kVAXDgOhPBsA==|TEST|TEST|Male|Chinese|A|2020-11-20 08:00:00.000|2020-11-23 08:00:00.000|liangxuchao@gmail.com||

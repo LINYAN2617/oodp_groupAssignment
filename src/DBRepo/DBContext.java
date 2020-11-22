@@ -1,14 +1,9 @@
 package DBRepo;
-import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import model.AdminModel;
@@ -16,9 +11,9 @@ import model.AllocatedListingModel;
 import model.CourseModel;
 import model.StudentModel;
 import model.TimeTableModel;
-import model.UserModel;
 import model.WaitListingModel;
 
+import model.NotificationSettingModel;
 public class DBContext {
 	
 	public static FileHandle File= new FileHandle();
@@ -28,14 +23,16 @@ public class DBContext {
 	public static ArrayList<AllocatedListingModel> AllocatedListing;
 	public static ArrayList<CourseModel> CourseModelListing;
 	public static ArrayList<TimeTableModel> TimeTableListing;
+	public static ArrayList<NotificationSettingModel> NotificationSettingListing;
 	
 	public static final String WLFileName = "FileDB/WaitingListing.txt"; 
 	public static final String ALFileName = "FileDB/AllocatedListing.txt"; 
 	public static final String TBFileName = "FileDB/TimeTable.txt"; 
 	public static final String CourseFileName = "FileDB/Course.txt"; 
 	public static final String UserFileName = "FileDB/User.txt"; 
+	public static final String NotificationFile = "FileDB/NotificationSetting.txt"; 
 	public static final String SEPARATOR = "|";
-
+	
 	public DBContext() {
 		try {
 			
@@ -43,6 +40,7 @@ public class DBContext {
 			AllocatedListing = readAllocateListing(ALFileName);
 			TimeTableListing = readTimeTableListing(TBFileName);
 			CourseModelListing =  readCourseListing(CourseFileName);
+			NotificationSettingListing =  readNotificationSettingListing(NotificationFile);
 			
 			ArrayList readuser = new ArrayList();
 			readuser = readUsers(UserFileName);
@@ -78,7 +76,7 @@ public class DBContext {
 				String  Gender = star.nextToken().trim();
 				String  Nationality = star.nextToken().trim();
 				char  UserType = star.nextToken().trim().charAt(0);
-
+				
 				Date AccessTimeStart;
 				Date  AccessTimeEnd;
 				try {
@@ -90,9 +88,17 @@ public class DBContext {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			
+
 				if(UserType == 'S') {
+
+					String EmailAddress = star.nextToken().trim();
+					String MatricNumber = star.nextToken().trim();
+					String PhoneNumber = star.nextToken().trim();
+					
 					StudentModel Student = new StudentModel(UserID, Password,FirstName,LastName,Gender,Nationality,UserType,AccessTimeStart,AccessTimeEnd);
+					Student.setEmail(EmailAddress);
+					Student.setMatricNumber(MatricNumber);
+					Student.setPhoneNumber(PhoneNumber);
 					Student.AllocateListing = 	AllocatedListingRepo.readAllocateListingByStudentID(Student.getUserID());
 					Student.WaitListing = 	WaitListingRepo.readAllWaitListingByStudentID(Student.getUserID());
 					student.add(Student) ;
@@ -224,6 +230,29 @@ public class DBContext {
 		return TimeTableListing ;
 	}
 	
+	public static ArrayList<NotificationSettingModel> readNotificationSettingListing(String filename) throws IOException {
+		// read String from text file
+		ArrayList stringArray = (ArrayList)FileHandle.read(filename);
+		ArrayList<NotificationSettingModel> NotificationSettingModelListing = new ArrayList<NotificationSettingModel>() ;
+        for (int i = 1 ; i < stringArray.size() ; i++) {
+        	
+				String st = (String)stringArray.get(i);
+				// get individual 'fields' of the string separated by SEPARATOR
+				StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
+
+			
+				String  NotificationType = star.nextToken().trim();	
+				String  FirstCredentialsDetail = star.nextToken().trim();
+				String  SecondCredentialsDetail = star.nextToken().trim();	
+				
+				NotificationSettingModel NotificationSettingItem = new NotificationSettingModel(NotificationType,FirstCredentialsDetail,SecondCredentialsDetail); 
+				
+				// add to UserModel list
+
+				NotificationSettingModelListing.add(NotificationSettingItem);
+		}
+		return NotificationSettingModelListing ;
+	}
 	
 	
 }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.AdminModel;
+import model.CourseModel;
 import model.StudentModel;
 
 public class StudRepo {
@@ -14,7 +15,21 @@ public class StudRepo {
 		return DBContext.student;
 	}
 	
-	
+	public static StudentModel GetStudentByStudID(String StudentID) {
+		StudentModel SModel =null;
+		
+        for (int i = 0 ; i < DBContext.student.size() ; i++) {
+        
+			if (DBContext.student.get(i).getUserID().equals(StudentID)) {
+				
+				SModel =  DBContext.student.get(i);
+				//course=CourseModelListing.get(i);
+				break;
+			
+			}
+		}
+        return SModel;
+	}
 	
 	public static void save(String filename, List<?> al)  {
 		

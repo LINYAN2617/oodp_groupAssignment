@@ -49,7 +49,6 @@ public class EmailService implements Notification {
 			
 			Transport.send(message);
 
-			System.out.println("A email notification is sent!");
 
 		} catch (MessagingException e) {
 			System.out.println(e.getMessage());

@@ -9,7 +9,9 @@ import model.TimeTableModel;
 import model.WaitListingModel;
 import DBRepo.AllocatedListingRepo;
 import DBRepo.CourseRepo;
+import DBRepo.StudRepo;
 import DBRepo.TimeTableRepo;
+import DBRepo.WaitListingRepo;
 import NotificationService.EmailService;
 import NotificationService.Notification;
 public class StudentController {
@@ -73,16 +75,8 @@ public class StudentController {
 						int isRegistered = CheckIsregisteredCourse(returnCModel.getIndexNumber(),LoggedStudent);
 						if (isRegistered == -1) {
 							
-							String returnMsg = Stud_addCourse(LoggedStudent.getUserID(), returnCModel);
-							System.out.println(returnMsg);
-							
-							ArrayList<String> SendInfo = new ArrayList<String>();
-							SendInfo.add(LoggedStudent.Email);
-							SendInfo.add("Course registration - Successfully register to Course Index (" + returnCModel.getIndexNumber() + "), Course Name (" + returnCModel.getCourseName() + ")" );
-							SendInfo.add("Dear " + LoggedStudent.getFullName() +  ", \n\n" + "Successfully register to Course Index (" + returnCModel.getIndexNumber() + "), Course Name (" + returnCModel.getCourseName() + ")");
-							
-							
-							EmailService.send(SendInfo);
+							Stud_addCourse(LoggedStudent.getUserID(), returnCModel);
+						
 							
 							System.out.println("\n ---------------------------------------------------------------");
 						}else if(isRegistered == 1) {
@@ -158,7 +152,7 @@ public class StudentController {
 	}
 	
 	
-	public String Stud_addCourse(String StudID, CourseModel CModel) {
+	public void Stud_addCourse(String StudID, CourseModel CModel) {
 		//Search for index number (pull info)
 		//FindCourse(courseIndex);
 		String returnMessage = "";
@@ -171,16 +165,36 @@ public class StudentController {
 			LoggedStudent.AddWaitListing(wlist);
 			
 			returnMessage = "Course Vancancy is full, your request is added in waiting list.";
+			System.out.println(returnMessage);
+			
+			ArrayList<String> SendInfo = new ArrayList<String>();
+			SendInfo.add(LoggedStudent.Email);
+			SendInfo.add("Course registration - Successfully apply for queue in Course Index (" + CModel.getIndexNumber() + "), Course Name (" + CModel.getCourseName() + ")" );
+			SendInfo.add("Dear " + LoggedStudent.getFullName() +  ", \n\n" + "Successfully apply for queue in Course Index (" + CModel.getIndexNumber() + "), Course Name (" + CModel.getCourseName() + ")");
+			
+			EmailService.send(SendInfo);
+			
 		}else{
 			AllocatedListingModel alist = new AllocatedListingModel(CModel.getIndexNumber(),StudID,date);
 			AllocatedListingRepo.add(alist);
 			LoggedStudent.AddAllocateListing(alist);
 			
-			returnMessage = "Successfully registered!";
+			returnMessage = "Successfully registered! Please wait while we sending an email notification...\n";
+			
+			System.out.println(returnMessage);
+			
+			ArrayList<String> SendInfo = new ArrayList<String>();
+			SendInfo.add(LoggedStudent.Email);
+			SendInfo.add("Course registration - Successfully register to Course Index (" + CModel.getIndexNumber() + "), Course Name (" + CModel.getCourseName() + ")" );
+			SendInfo.add("Dear " + LoggedStudent.getFullName() +  ", \n\n" + "Successfully register to Course Index (" + CModel.getIndexNumber() + "), Course Name (" + CModel.getCourseName() + ")");
+			
+			
+			EmailService.send(SendInfo);
+			returnMessage = "An email notification sent!";
+			
 
 		};
 		
-		return returnMessage;
 		//Confirm to register(push to add)
 	}
 	
@@ -191,7 +205,8 @@ public class StudentController {
 			if (AList.get(i).getCourseIndex() == dropIndex) {
 				AllocatedListingRepo.remove(AList.get(i));
 				LoggedStudent.RemoveAllocateListing(dropIndex);
-				System.out.println("Course has dropped. \n");
+				PushWaitListToAllocateList(dropIndex);
+				System.out.println("Course has dropped. An email notification is sent. \n");
 				return;
 			}
 		}
@@ -408,6 +423,37 @@ public class StudentController {
 				"1. Confirm to " + action + "?\n"+
 				"2. Cancel\n");
 		return scan.nextInt();
+	}
+	
+	public static void PushWaitListToAllocateList(int CourseIndex) {
+		CourseModel CModel = CourseRepo.GetCourseByIndexNumber(CourseIndex);
+		int taken = AllocatedListingRepo.GetTakenSlotByCourseIndex(CourseIndex);
+		if(CModel.getVacancy() - taken > 0) {
+		  WaitListingModel  WModel = WaitListingRepo.GetLastWaitListingByCourseIndex(CourseIndex);
+		  if(WModel != null) {
+			  WaitListingRepo.remove(WModel);
+			  
+			  StudentModel Stud = StudRepo.GetStudentByStudID(WModel.getUserID());
+			  
+			  Date date = new Date();
+			  AllocatedListingModel AModel = new AllocatedListingModel(WModel.getCourseIndex(), WModel.getUserID(), date);
+			  AllocatedListingRepo.add(AModel);
+			  
+			  ArrayList<String> SendInfo_CurrentUser = new ArrayList<String>();
+			  SendInfo_CurrentUser.add(LoggedStudent.Email);
+			  SendInfo_CurrentUser.add("Course registration - Successfully drop the Course Index (" + CModel.getIndexNumber() + "), Course Name (" + CModel.getCourseName() + ")" );
+			  SendInfo_CurrentUser.add("Dear " + LoggedStudent.getFullName() +  ", \n\n" + "Successfully drop the Course Index (" + CModel.getIndexNumber() + "), Course Name (" + CModel.getCourseName() + ")");
+			  EmailService.send(SendInfo_CurrentUser);
+			  
+			  ArrayList<String> SendInfo_WaitListUser = new ArrayList<String>();
+			  SendInfo_WaitListUser.add(Stud.getEmail());
+			  SendInfo_WaitListUser.add("Course registration - You are allocaed to the Course Index (" + CModel.getIndexNumber() + "), Course Name (" + CModel.getCourseName() + ")" );
+			  SendInfo_WaitListUser.add("Dear " + LoggedStudent.getFullName() +  ", \n\n" + "A slot is open for your queue. \nYou are successfully register to Course Index (" + CModel.getIndexNumber() + "), Course Name (" + CModel.getCourseName() + ")");
+			  EmailService.send(SendInfo_WaitListUser);
+			  
+			  
+		  }
+		}
 	}
 	
 }

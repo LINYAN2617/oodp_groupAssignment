@@ -270,6 +270,7 @@ public class AdminController {
 			System.out.print("School:");
 			String School;
 			School = sc.next();
+			School += sc.nextLine();
 			newCourse.setSchool(School);
 			
 			System.out.print("Vacancy:");

@@ -2,3 +2,4 @@ UserID|Password|FirstName|LastName|Gender|Nationality|UserType|AccessTimeStart|A
 LIAN0121|nSIBakABX5kVAXDgOhPBsA==|Xu Chao|Liang|Male|Chinese|S|2020-11-20 08:00:00.000|2020-11-23 08:00:00.000|liangxuchao@gmail.com|U180000A|88886772
 TEST123|nSIBakABX5kVAXDgOhPBsA==|TEST|TEST|Male|Chinese|A|2020-11-20 08:00:00.000|2020-11-23 08:00:00.000|liangxuchao@gmail.com||
 STUD01|nSIBakABX5kVAXDgOhPBsA==|Stud|01|Male|Chinese|S|2020-11-20 08:00:00.000|2020-11-23 08:00:00.000|liangxuchao@gmail.com|U180000B|88886772
+STUD02|nSIBakABX5kVAXDgOhPBsA==|Stud|01|Male|Chinese|S|2020-11-20 08:00:00.000|2020-11-23 08:00:00.000|liangxuchao@gmail.com|U180000B|88886772

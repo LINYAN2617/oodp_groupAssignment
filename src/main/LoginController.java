@@ -26,8 +26,6 @@ public class LoginController {
 	private static String secretKey = "tBJCPuoiynMYps8W";
 	private static String salt = "YxzDI5ie9uqGicjk";
 	
-	
-	
 	public static String getPasswordMasked(Console cons, String msg)
     {
         char[] passwd;
@@ -45,6 +43,7 @@ public class LoginController {
 
 	public static String encrypt(String strToEncrypt) 
 	{
+		
 	    try
 	    {
 	        byte[] iv = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };

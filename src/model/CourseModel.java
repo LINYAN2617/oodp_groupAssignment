@@ -39,7 +39,7 @@ public class CourseModel {
 		return CourseName;
 	}
 	
-	public String getClassType() {
+	public String getCourseType() {
 		return CourseType;
 	}
 	
@@ -50,7 +50,9 @@ public class CourseModel {
 	public String getSchool() {
 		return School;
 	}
-	
+	public int getAU() {
+		return AU;
+	}
 	public void setCourseCode(String CourseCode) {
 		this.CourseCode =CourseCode;
 	}
@@ -58,7 +60,7 @@ public class CourseModel {
 	public void setCourseName(String CourseName) {
 		this.CourseName =CourseName;
 	}
-	public void setClassType(String CourseType) {
+	public void setCourseType(String CourseType) {
 		this.CourseType =CourseType;
 	}
 	
@@ -73,5 +75,13 @@ public class CourseModel {
 		this.School =School;
 	}
 
+	public void setAU(int AU) {
+		this.AU =AU;
+	}
+	
+
+	public void setTimeTable(String IndexNumber) {
+		
+	}
 
 }

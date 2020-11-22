@@ -4,7 +4,9 @@ public class TimeTableModel {
 	private int IndexNumber;
 	private String Type; String Day;String Time; String Venue;
 	private int Group;
-
+	public TimeTableModel() {
+		
+	}
 	public TimeTableModel(int IndexNumber, String Type, int Group, String Day, String Time, String Venue){
 		this.IndexNumber = IndexNumber;
 		this.Type = Type;
@@ -47,5 +49,12 @@ public class TimeTableModel {
 		return Time;
 		
 	}
-
+	public void setTime(String Time) {
+		this.Time = Time;
+		
+	}
+	public void setVenue(String Venue) {
+		this.Venue = Venue;
+		
+	}
 }

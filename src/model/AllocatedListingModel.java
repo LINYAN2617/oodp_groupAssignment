@@ -22,6 +22,9 @@ public class AllocatedListingModel {
 		return CourseIndex;
 	}
 	
+	public Date getRegisterTime() {
+		return RegisterTime;
+	}
 	
 	
 }

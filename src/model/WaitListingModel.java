@@ -16,5 +16,12 @@ public class WaitListingModel {
 		return UserID;
 	}
 	
+	public int getCourseIndex() {
+		return CourseIndex;
+	}
+	
+	public Date getApplyTime() {
+		return ApplyTime;
+	}
 	
 }

@@ -3,10 +3,10 @@ package DBRepo;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import model.AdminModel;
-import model.CourseModel;
 import model.StudentModel;
 
 public class StudRepo {
@@ -37,10 +37,27 @@ public class StudRepo {
 	}
 	
 	
+	public static void UpdateAccessTime(Date StartTime, Date EndTime) {
+		 for (int i = 0 ; i < DBContext.student.size() ; i++) {
+	        	StudentModel stud = DBContext.student.get(i);
+	        	stud.setAccessTimeEnd(EndTime);
+	        	stud.setAccessTimeStart(StartTime);
+		 }
+		 
+		 for (int i = 0 ; i < DBContext.admin.size() ; i++) {
+	        	AdminModel admin = DBContext.admin.get(i);
+	        	admin.setAccessTimeEnd(EndTime);
+	        	admin.setAccessTimeStart(StartTime);
+		 }
+		 
+		 save(DBContext.student);
+	}
+	
+	
 	public static void save(List<StudentModel> al)  {
 		
 		List<String> alw = new ArrayList<String>() ;
-		alw.add("UserID|Password|FirstName|LastName|Gender|Nationality|UserType|AccessTimeStart|AccessTimeEnd|Email|MatricNumber|PhoneNumber");
+		alw.add("UserID|Password|FirstName|LastName|Gender|Nationality|UserType|AccessTimeStart|AccessTimeEnd|MatricNumber|Email|PhoneNumber");
 		String SEPARATOR = DBContext.SEPARATOR;
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (int i = 0 ; i < al.size() ; i++) {
@@ -93,6 +110,7 @@ public class StudRepo {
 			st.append(formatter.format(admin.getAccessTimeStart()));
 			st.append(SEPARATOR);
 			st.append(formatter.format(admin.getAccessTimeEnd()));
+			st.append(SEPARATOR);
         	st.append("-");
 			st.append(SEPARATOR);
 			st.append("-");
@@ -108,4 +126,5 @@ public class StudRepo {
 			e.printStackTrace();
 		}
 	}
+	
 }

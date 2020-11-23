@@ -1,5 +1,7 @@
-UserID|Password|FirstName|LastName|Gender|Nationality|UserType|AccessTimeStart|AccessTimeEnd|Email|MatricNumber|PhoneNumber
-LIAN0121|nSIBakABX5kVAXDgOhPBsA==|Xu Chao|Liang|Male|Chinese|S|2020-11-20 08:00:00.000|2020-11-25 08:00:00.000|liangxuchao@gmail.com|U180000A|88886772
-TEST123|nSIBakABX5kVAXDgOhPBsA==|TEST|TEST|Male|Chinese|A|2020-11-20 08:00:00.000|2020-11-25 08:00:00.000|liangxuchao@gmail.com||
-STUD01|nSIBakABX5kVAXDgOhPBsA==|Stud|01|Male|Chinese|S|2020-11-20 08:00:00.000|2020-11-25 08:00:00.000|liangxuchao@gmail.com|U180000B|88886772
-STUD02|nSIBakABX5kVAXDgOhPBsA==|Stud|01|Male|Chinese|S|2020-11-20 08:00:00.000|2020-11-25 08:00:00.000|liangxuchao@gmail.com|U180000B|88886772
+UserID|Password|FirstName|LastName|Gender|Nationality|UserType|AccessTimeStart|AccessTimeEnd|MatricNumber|Email|PhoneNumber
+LIAN0121|nSIBakABX5kVAXDgOhPBsA==|Xu Chao|Liang|Male|Chinese|S|2020-11-21 08:00:00|2020-11-27 09:00:00|U180000A|liangxuchao@gmail.com|88886772
+STUD01|nSIBakABX5kVAXDgOhPBsA==|Stud|Test|Male|Chinese|S|2020-11-21 08:00:00|2020-11-27 09:00:00|U180000B|liangxuchao@gmail.com|88886772
+STUD02|nSIBakABX5kVAXDgOhPBsA==|Stud|Test|Male|Chinese|S|2020-11-21 08:00:00|2020-11-27 09:00:00|U180000B|liangxuchao@gmail.com|88886772
+STUD03|nSIBakABX5kVAXDgOhPBsA==|Xu Chao|Liang|Male|Chinese|S|2020-11-21 08:00:00|2020-11-27 09:00:00|liangxuchao@gmail.com|UA1239923A|98992232
+STUD04|nSIBakABX5kVAXDgOhPBsA==|Xu Chao|Xu Chao|male|chinese|S|2020-11-21 08:00:00|2020-11-27 09:00:00|sda2134i|alsad@gmail.com|23242211
+TEST123|nSIBakABX5kVAXDgOhPBsA==|TEST|TEST|Male|Chinese|A|2020-11-21 08:00:00|2020-11-27 09:00:00|-|-|-

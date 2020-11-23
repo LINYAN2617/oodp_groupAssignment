@@ -91,8 +91,8 @@ public class DBContext {
 
 				if(UserType == 'S') {
 
-					String EmailAddress = star.nextToken().trim();
 					String MatricNumber = star.nextToken().trim();
+					String EmailAddress = star.nextToken().trim();
 					String PhoneNumber = star.nextToken().trim();
 					
 					StudentModel Student = new StudentModel(UserID, Password,FirstName,LastName,Gender,Nationality,UserType,AccessTimeStart,AccessTimeEnd);

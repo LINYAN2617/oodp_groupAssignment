@@ -18,6 +18,7 @@ public class StudentController {
 	
 	private static StudentModel LoggedStudent;
 	private static Notification EmailService = new EmailService();
+	private static LoginController LoginHandle = new LoginController();
 	public StudentController(StudentModel LoggedStudent) {
 		
 		this.LoggedStudent=LoggedStudent;
@@ -47,6 +48,7 @@ public class StudentController {
 					"4. Check Vacancies Available\n"+
 					"5. Change Index Number of Course\n"+
 					"6. Swap Index Number with Another Student\n"+
+					"7. Log out\n"+
 					"-1: To exit\n");
 	
 			System.out.println("Enter your choice: ");
@@ -185,7 +187,9 @@ public class StudentController {
 					isSwapped = SwapIndex(LoggedStudent.getUserID());
 				}
 				break;
-				
+			case 7:
+				LoginHandle.logout();
+				break;
 				
 			}
 		}
@@ -497,9 +501,11 @@ public class StudentController {
 					System.out.format("Course class %d and Course Class %d are not for the same course. \n\n", CourseIndex, PeerCourseIndex);
 				}
 				else {
-					System.out.println("Student 1 - Matric: " + LoggedStudent.getMatricNumber() + " Index number: " + CourseIndex);
+					System.out.println("Student 1 - Matric: " + LoggedStudent.getMatricNumber() + ", Index number: " + CourseIndex );
+					System.out.println("TimeTable" );
 					DisplayTimetableByCourse(studentClass);
 					System.out.println("Student 2 - Matric: " + checkIsStud.getMatricNumber() + " Index number: " + PeerCourseIndex);
+					System.out.println("TimeTable" );
 					DisplayTimetableByCourse(peerClass);
 					int isConfirmed = getConfirmation("Swap");
 					while (isConfirmed == -2) {

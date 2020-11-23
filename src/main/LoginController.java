@@ -14,6 +14,8 @@ import DBRepo.AdminRepo;
 import DBRepo.StudRepo;
 import model.StudentModel;
 import model.AdminModel;
+import main.MainProgram;
+
 public class LoginController {
 	
 	private static String secretKey = "tBJCPuoiynMYps8W";
@@ -120,6 +122,15 @@ public class LoginController {
 		 return returnresult;
 	}
 	
-	
+	public void logout() {
+		
+		System.out.println("\nYou are logged out");
+		MainProgram.isloginAsAdmin = false;
+		MainProgram.isloginAsStud = false;
+		MainProgram.LoggedStudent = null;
+		MainProgram.LoggedAdmin = null;
+		
+		MainProgram.ProgramInterface();
+	}
 	
 }

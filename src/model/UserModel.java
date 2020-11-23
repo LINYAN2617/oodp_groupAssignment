@@ -54,7 +54,7 @@ public class UserModel  implements Serializable {
 		return FirstName;
 	}
 	public String getLastName() {
-		return FirstName;
+		return LastName;
 	}
 	public String getGender() {
 		return Gender;
@@ -68,5 +68,12 @@ public class UserModel  implements Serializable {
 	}
 	public Date getAccessTimeEnd() {
 		return AccessTimeEnd;
+	}
+	
+	public void setAccessTimeStart(Date AccessTimeStart) {
+		this.AccessTimeStart=AccessTimeStart;
+	}
+	public void setAccessTimeEnd(Date AccessTimeEnd) {
+		this.AccessTimeEnd=AccessTimeEnd;
 	}
 }

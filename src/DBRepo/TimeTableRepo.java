@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import model.CourseModel;
 import model.TimeTableModel;
 
 public class TimeTableRepo {
@@ -31,6 +32,23 @@ public class TimeTableRepo {
 	}
 	
 	
+	public static void Add(ArrayList<TimeTableModel> TimeTableList){
+		for(int i = 0; i <TimeTableList.size(); i++){
+			DBContext.TimeTableListing.add(TimeTableList.get(i));
+		}
+		save(DBContext.TimeTableListing);	
+	}
+	
+	public static void Update(ArrayList<TimeTableModel> OldTimeTableList,ArrayList<TimeTableModel> NewTimeTableList ){
+		for(int i = 0; i <OldTimeTableList.size(); i++){
+			DBContext.TimeTableListing.remove(OldTimeTableList.get(i));
+		}
+		for(int i = 0; i <NewTimeTableList.size(); i++){
+			DBContext.TimeTableListing.add(NewTimeTableList.get(i));
+		}
+		save(DBContext.TimeTableListing);	
+	}
+	
 	public static void save(List<TimeTableModel> al)  {
 		
 		List<String> alw = new ArrayList<String>() ;
@@ -47,10 +65,11 @@ public class TimeTableRepo {
 				st.append(SEPARATOR);
 				st.append(timeTable.getDay());
 				st.append(SEPARATOR);
-				st.append(timeTable.getTime());
+				st.append(timeTable.getTimeStart());
+				st.append(SEPARATOR);
+				st.append(timeTable.getTimeEnd());
 				st.append(SEPARATOR);
 				st.append(timeTable.getVenue());
-				st.append(SEPARATOR);
 				
 				alw.add(st.toString()) ;
 			}
@@ -62,5 +81,6 @@ public class TimeTableRepo {
 			e.printStackTrace();
 		}
 	}
+	
 	
 }

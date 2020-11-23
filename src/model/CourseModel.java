@@ -79,6 +79,10 @@ public class CourseModel {
 		this.AU =AU;
 	}
 	
+	public ArrayList<TimeTableModel> GetTimeTableListing() {
+		return TimeTableList;
+		
+	}
 
 	public void setTimeTable(String IndexNumber) {
 		

@@ -2,16 +2,17 @@ package model;
 
 public class TimeTableModel {
 	private int IndexNumber;
-	private String Type; String Day;String Time; String Venue;
+	private String Type; String Day;String TimeStart; String TimeEnd; String Venue;
 	private int Group;
 	public TimeTableModel() {
 		
 	}
-	public TimeTableModel(int IndexNumber, String Type, int Group, String Day, String Time, String Venue){
+	public TimeTableModel(int IndexNumber, String Type, int Group, String Day, String TimeStart,String TimeEnd, String Venue){
 		this.IndexNumber = IndexNumber;
 		this.Type = Type;
 		this.Day = Day;
-		this.Time = Time;
+		this.TimeStart = TimeStart;
+		this.TimeEnd = TimeEnd;
 		this.Group = Group;
 		this.Venue = Venue;
 	}
@@ -45,12 +46,21 @@ public class TimeTableModel {
 		
 	}
 	
-	public String getTime() {
-		return Time;
+	public String getTimeStart() {
+		return TimeStart;
 		
 	}
-	public void setTime(String Time) {
-		this.Time = Time;
+	public void setTimeStart(String TimeStart) {
+		this.TimeStart = TimeStart;
+		
+	}
+	
+	public String getTimeEnd() {
+		return TimeEnd;
+		
+	}
+	public void setTimeEnd(String TimeEnd) {
+		this.TimeEnd = TimeEnd;
 		
 	}
 	public void setVenue(String Venue) {

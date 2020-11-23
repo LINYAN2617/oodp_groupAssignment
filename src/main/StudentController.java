@@ -23,7 +23,15 @@ public class StudentController {
 		this.LoggedStudent=LoggedStudent;
 	}
 	
-	
+	public int validationInt() {
+		Scanner input = new Scanner(System.in);
+		int option = -2;
+		while (input.hasNextInt()) {
+			option = input.nextInt();
+			break;
+		}
+		return option;
+	}
 	public void StartStudPage() {
 	
 		System.out.println ("Successfully logged in! ");
@@ -33,114 +41,148 @@ public class StudentController {
 		int option = 0;
 		while (option != -1) {
 			System.out.println("\nPlease select an option:\n" +
-							"1. Add courses\n"+
-							"2. Drop courses\n"+
-							"3. Check Courses Registered\n" + 
-							"4. Check Vacancies Available\n"+
-							"5. Change Index Number of Course\n"+
-							"6. Swop Index Number with Another Student\n"+
-							"-1: To exit\n"+
-							"Enter your choice: ");
-			Scanner scan = new Scanner(System.in);
-			int courseIndex;
-			
-			
-			 if(scan.hasNextInt())  
-			 {  
-				 option = scan.nextInt();  
-				
-			 }   
-			 else {  
-	            System.out.println("\nPlease entered Integer value. ");  
-	            System.out.println("---------------------------------------- \n");
-			 }  
-		
+					"1. Add courses\n"+
+					"2. Drop courses\n"+
+					"3. Check Courses Registered\n" + 
+					"4. Check Vacancies Available\n"+
+					"5. Change Index Number of Course\n"+
+					"6. Swop Index Number with Another Student\n"+
+					"-1: To exit\n");
+	
+			System.out.println("Enter your choice: ");
+			option = validationInt();
+			if ( option > 7 || option < -1 || option == 0) {
+				System.out.println ("Invalid choice, please try again.");continue;
+			}
+
 			
 			switch (option) {
 			case 1:
-				System.out.println ("Enter the Index Number of the course:");
-				courseIndex = scan.nextInt();
-				CourseModel returnCModel =  DBRepo.CourseRepo.GetCourseByIndexNumber(courseIndex);
-				
-				if(returnCModel == null) {
-					System.out.println("Course Not Found, Please try again!");
-				}else {
-					returnCModel.getIndexNumber();
-					int taken = AllocatedListingRepo.GetTakenSlotByCourseIndex(courseIndex);
-					int available = returnCModel.getVacancy() - taken;
-					System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", "Course Code", "Course Name","Max Vacancy","Available Slot", "School", "AU");
-					System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", returnCModel.getCourseCode(), returnCModel.getCourseName(),returnCModel.getVacancy(), available ,returnCModel.getSchool(),returnCModel.getAU());
-				
-					if(getConfirmation(scan, "register") == 1)  {
-						int isRegistered = CheckIsregisteredCourse(returnCModel.getIndexNumber(),LoggedStudent);
-						if (isRegistered == -1) {
-							
-							Stud_addCourse(LoggedStudent.getUserID(), returnCModel);
-						
-							
-							System.out.println("\n ---------------------------------------------------------------");
-						}else if(isRegistered == 1) {
-							System.out.println("You already registered the course");
-
-							System.out.println("---------------------------------------------- \n");
-						}else if(isRegistered == 2) {
-							System.out.println("You already registered the course and is under the waiting list");
-
-							System.out.println("---------------------------------------------- \n");
-						}else {
-							System.out.println("You already registered up to 21 AU!");
-
-							System.out.println("---------------------------------------------- \n");
+				int courseIndex = 0;
+				while (courseIndex != -1) {
+					System.out.println ("Enter the Index Number of the course you want to add (-1 return to main page):");
+					courseIndex = validationInt();
+					if (courseIndex == -1) {
+						break;
+					}else if (courseIndex == -2) {
+						System.out.println("Invalid Index number, please try again.");
+						continue;
+					}
+					CourseModel returnCModel =  CourseRepo.GetCourseByIndexNumber(courseIndex);
 					
+					if(returnCModel == null) {
+						System.out.println("Course Not Found, Please try again!");
+					}else {
+						returnCModel.getIndexNumber();
+						int taken = AllocatedListingRepo.GetTakenSlotByCourseIndex(courseIndex);
+						int available = returnCModel.getVacancy() - taken;
+						System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", "Course Code", "Course Name","Max Vacancy","Available Slot", "School", "AU");
+						System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", returnCModel.getCourseCode(), returnCModel.getCourseName(),returnCModel.getVacancy(), available ,returnCModel.getSchool(),returnCModel.getAU());
+					
+						int isConfirmed = getConfirmation("register");
+						while (isConfirmed == -2) {
+							System.out.println("Invalid input, please try again!");
+							isConfirmed = getConfirmation("register");
+							
+						}
+						
+						if(isConfirmed == 1)  {
+							int isRegistered = CheckCourseAvailability(returnCModel.getIndexNumber(),LoggedStudent,false);
+							if (isRegistered == -1) {
+								
+								Stud_addCourse(LoggedStudent.getUserID(), returnCModel);
+							
+								
+								System.out.println("\n ---------------------------------------------------------------");
+							}else if(isRegistered == 1) {
+								System.out.println("You already registered the course");
+	
+								System.out.println("---------------------------------------------- \n");
+							}else if(isRegistered == 2) {
+								System.out.println("You already registered the course and is under the waiting list");
+	
+								System.out.println("---------------------------------------------- \n");
+							}else if(isRegistered == 4){
+								System.out.println("You have selected a course Index will crash on you existing courses");
+								System.out.println("---------------------------------------------- \n");
+								
+							}else {
+								System.out.println("You already registered up to 21 AU!");
+	
+								System.out.println("---------------------------------------------- \n");
+						
+							}
 						}
 					}
 				}
 				break;					
 			case 2: 
 				DisplayRegisteredListReturnAU();
-				System.out.println("Select course to drop: ");
-				int dropIndex = scan.nextInt(); 
-				Stud_dropCourse(LoggedStudent.getUserID(), dropIndex);
+				System.out.println("Select course to drop (-1 return to main page): ");
+				int dropIndex = validationInt();
+				while (dropIndex != -1) {
+					if (dropIndex != -2){
+						Stud_dropCourse(LoggedStudent.getUserID(), dropIndex);
+						
+					}
+					else {
+						System.out.println("Invalid Index number.Please re-enter."); 
+					}
+					
+				}
 				break;
 				
 			case 3:
 				int totalAU = DisplayRegisteredListReturnAU();
-				
-				DisplayWaitlist();
-				System.out.println("Total registered AU: " + totalAU + "\n");
-				break;
-				
-			case 4:
-				System.out.println ("Enter the Index Number of the course:");
-				courseIndex = scan.nextInt();
-				CourseModel returnCModelVa =  DBRepo.CourseRepo.GetCourseByIndexNumber(courseIndex);
-				if(returnCModelVa == null) {
-					System.out.println("Course Not Found, Please try again!");
-				}else {
-					
-					int taken = AllocatedListingRepo.GetTakenSlotByCourseIndex(courseIndex);
-					int available = returnCModelVa.getVacancy() - taken;
-					System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", "Course Code", "Course Name","Max Vacancy","Available Slot", "School", "AU");
-					System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", returnCModelVa.getCourseCode(), returnCModelVa.getCourseName(),returnCModelVa.getVacancy(), available ,returnCModelVa.getSchool(),returnCModelVa.getAU());
+				System.out.println("Enter -1 return to main page: ");
+				int back = validationInt();
+				while (back != -1) {
+					DisplayWaitlist();
+					System.out.println("Total registered AU: " + totalAU + "\n");
+
 				}
+				break;
+
+			case 4:
+				System.out.println ("Enter the Index Number of the course (-1 return to main page):");
+				int VaIndex = validationInt();
+				
+					while (VaIndex == -2) {
+						System.out.println ("Invalid input, please re-enter (-1 return to main page):");
+						VaIndex = validationInt();
+					}
+					CourseModel returnCModelVa =  CourseRepo.GetCourseByIndexNumber(VaIndex);
+					if(returnCModelVa == null) {
+						System.out.println("Course Not Found, Please try again!");
+					}else {
+						
+						int taken = AllocatedListingRepo.GetTakenSlotByCourseIndex(VaIndex);
+						int available = returnCModelVa.getVacancy() - taken;
+						System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", "Course Code", "Course Name","Max Vacancy","Available Slot", "School", "AU");
+						System.out.format("|%-13s |%-40s | %-13s | %-13s | %-20s| %-4s |\n", returnCModelVa.getCourseCode(), returnCModelVa.getCourseName(),returnCModelVa.getVacancy(), available ,returnCModelVa.getSchool(),returnCModelVa.getAU());
+					}
+				
+				
 					break;
 			case 5:
 				boolean isChanged = false;
-				int currentIndex = 0;
+				
 				while (!isChanged) {
 					System.out.println ("Enter the current Index Number of the course (-1 return to student main page):");
-					currentIndex = scan.nextInt();
+					int currentIndex = validationInt();
 					if (currentIndex == -1) {break;}
+					else if(currentIndex == -2) {System.out.println ("Invalid input.");continue;}
 					System.out.println ("Enter the new Index Number of the course:");
-					int newIndex = scan.nextInt();
-					isChanged = changeIndex(LoggedStudent.getUserID(), currentIndex, newIndex, scan);
+					int newIndex = validationInt();
+					if(newIndex == -2) {System.out.println ("Invalid input.");continue;}
+					isChanged = changeIndex(LoggedStudent.getUserID(), currentIndex, newIndex);
 				}
 				break;
 			case 6:
 				boolean isSwopped = false;
 				while (!isSwopped) {
 					
-					isSwopped = SwopIndex(LoggedStudent.getUserID(),scan);
+					isSwopped = SwopIndex(LoggedStudent.getUserID());
 				}
 				break;
 				
@@ -161,7 +203,7 @@ public class StudentController {
 		
 		if(CModel.getVacancy() <= AllocatedListingRepo.GetTakenSlotByCourseIndex(CModel.getIndexNumber())){
 			WaitListingModel wlist = new WaitListingModel(CModel.getIndexNumber(),StudID,date);
-			DBRepo.WaitListingRepo.add(wlist);
+			WaitListingRepo.add(wlist);
 			LoggedStudent.AddWaitListing(wlist);
 			
 			returnMessage = "Course Vancancy is full, your request is added in waiting list.";
@@ -175,7 +217,7 @@ public class StudentController {
 			EmailService.send(SendInfo);
 			
 		}else{
-			AllocatedListingModel alist = new AllocatedListingModel(CModel.getIndexNumber(),StudID,date);
+			AllocatedListingModel alist = new AllocatedListingModel(CModel.getIndexNumber(),CModel.getCourseCode(),StudID,date);
 			AllocatedListingRepo.add(alist);
 			LoggedStudent.AddAllocateListing(alist);
 			
@@ -227,7 +269,8 @@ public class StudentController {
 		Student.RemoveAllocateListing(dropIndex);
 		
 		Date date = new Date();
-		AllocatedListingModel newAL = new AllocatedListingModel(addIndex, Student.getUserID(),date);
+		CourseModel courselist = CourseRepo.GetCourseByIndexNumber(addIndex);
+		AllocatedListingModel newAL = new AllocatedListingModel(addIndex,courselist.getCourseCode(), Student.getUserID(),date);
 		AllocatedListingRepo.add(newAL);
 		Student.AddAllocateListing(newAL);
 		
@@ -241,7 +284,7 @@ public class StudentController {
 		System.out.format("|%-15s | %-4s | %-15s | %-10s | %10s | \n", "Course Code", "AU","Course Type", "Index", "Status");
 		for (int i = 0; i<AList.size(); i++) {
 			int courseIndex = AList.get(i).getCourseIndex();
-			CourseModel courselist = DBRepo.CourseRepo.GetCourseByIndexNumber(courseIndex);
+			CourseModel courselist = CourseRepo.GetCourseByIndexNumber(courseIndex);
 			
 			System.out.format("|%-15s | %-4d | %-15s | %-10d | %10s | \n", courselist.getCourseCode(), courselist.getAU(),courselist.getCourseType(), courseIndex, "Registered");
 			totalAU+=courselist.getAU();
@@ -255,41 +298,101 @@ public class StudentController {
 		
 		for (int i = 0; i<wList.size(); i++) {
 			int courseIndex = wList.get(i).getCourseIndex();
-			CourseModel courselist = DBRepo.CourseRepo.GetCourseByIndexNumber(courseIndex);
+			CourseModel courselist = CourseRepo.GetCourseByIndexNumber(courseIndex);
 			System.out.format("|%-15s | %-4d | %-15s | %-10d | %10s | \n", courselist.getCourseCode(), courselist.getAU(),courselist.getCourseType(), courseIndex, "Waitlist");
 
 		}
 	}
-	
-	public int CheckIsregisteredCourse(int CourseIndex, StudentModel Stud) {
-		int AU = 0;
-		for (AllocatedListingModel al : Stud.GetAllocateListing()) { 
-			if (al.getCourseIndex() == CourseIndex) { 
-				return 1;
-			} 
-			AU += CourseRepo.GetCourseByIndexNumber(al.getCourseIndex()).getAU();
-		}
+	public int CheckIsCrashTimeTable(int CourseIndex, StudentModel Stud) {
+		CourseModel newCModel = CourseRepo.GetCourseByIndexNumber(CourseIndex);
 		
-		for (WaitListingModel wl : Stud.GetWaitListing()) { 
-			if (wl.getCourseIndex() == CourseIndex) { 
-				return 2;
-			} 
+		for (AllocatedListingModel al : Stud.GetAllocateListing()) { 
+		
+				CourseModel CurrCModel = CourseRepo.GetCourseByIndexNumber(al.getCourseIndex());
+				ArrayList<TimeTableModel> currtm = CurrCModel.GetTimeTableListing();
+				for(TimeTableModel tm : currtm) {
+					
+					int timeStartHour = Integer.parseInt(tm.getTimeStart().substring(0,2));
+					int timeStartMin = Integer.parseInt(tm.getTimeStart().substring(2,4));
+					int timeEndHour = Integer.parseInt(tm.getTimeEnd().substring(0,2));
+					int timeEndMin = Integer.parseInt(tm.getTimeEnd().substring(2,4));
+					
+					for(TimeTableModel tm2 : newCModel.GetTimeTableListing()) {
+						
+						
+						int CtimeStartHour = Integer.parseInt(tm2.getTimeStart().substring(0,2));
+						int CtimeStartMin = Integer.parseInt(tm2.getTimeStart().substring(2,4));
+						int CtimeEndHour = Integer.parseInt(tm2.getTimeEnd().substring(0,2));
+						int CtimeEndMin = Integer.parseInt(tm.getTimeEnd().substring(2,4));
+						
+						if(tm.getDay().equals(tm2.getDay()) 
+						   && ((timeStartHour <= CtimeStartHour && timeEndHour >= CtimeStartHour)
+						  || (timeStartHour  >= CtimeStartHour && timeStartHour  <= CtimeEndHour))
+						) {
+							
+							return 4;
+						}
+					}
+				}
+		
+		}
+		return -1;
+		
+	}
+	
+	public int CheckCourseAvailability(int CourseIndex, StudentModel Stud, boolean isforchangeIndex) {
+		int AU = 0;
+		CourseModel newCModel = CourseRepo.GetCourseByIndexNumber(CourseIndex);
+		if(!isforchangeIndex) {
+				
+			for (AllocatedListingModel al : Stud.GetAllocateListing()) { 
+				if (al.getCourseCode().equals(newCModel.getCourseCode())) { 
+				
+					return 1;
+				}else {
+					if(CheckIsCrashTimeTable(CourseIndex, Stud) == 4) {
+						return 4;
+					};
+				}
+				AU += CourseRepo.GetCourseByIndexNumber(al.getCourseIndex()).getAU();
+			}
+			
+			
+			
+			for (WaitListingModel wl : Stud.GetWaitListing()) { 
+				if (wl.getCourseIndex() == CourseIndex) { 
+					return 2;
+				} 
+	
+				AU += CourseRepo.GetCourseByIndexNumber(wl.getCourseIndex()).getAU();
+			}
+		
 
-			AU += CourseRepo.GetCourseByIndexNumber(wl.getCourseIndex()).getAU();
+		}else {
+			for (AllocatedListingModel al : Stud.GetAllocateListing()) { 
+				if (!al.getCourseCode().equals(newCModel.getCourseCode())) { 
+					
+					if(CheckIsCrashTimeTable(CourseIndex, Stud) == 4) {
+						return 4;
+					};
+				}
+				AU += CourseRepo.GetCourseByIndexNumber(al.getCourseIndex()).getAU();
+			}
+			
 		}
 		
 		if(AU >= 21) {
 			return 3;
 		}
-		
+
 		return -1;
 	}
 	
-	public boolean changeIndex(String StudentID, int currentIndex, int newIndex, Scanner scan) {
+	public boolean changeIndex(String StudentID, int currentIndex, int newIndex) {
 		ArrayList<AllocatedListingModel> AList = new ArrayList<AllocatedListingModel>();
 		AList = LoggedStudent.AllocateListing;
 		boolean isChanged = false;
-		int isRegister = CheckIsregisteredCourse(currentIndex,LoggedStudent);
+		int isRegister = CheckCourseAvailability(currentIndex,LoggedStudent,false);
 		if (isRegister == -1) {
 			System.out.println("You haven't registered course class " + currentIndex + "\n");
 		}
@@ -308,37 +411,53 @@ public class StudentController {
 			else if (newClass.getVacancy() <= AllocatedListingRepo.GetTakenSlotByCourseIndex(newIndex)) {
 				System.out.println("Course class " + newIndex + " Vancancy is full.\n");
 			}else {
-				//Print Current Index info
-				CourseModel CModel = CourseRepo.GetCourseByIndexNumber(currentIndex);
-				System.out.println("Current Index Number: " + currentIndex);
-				DisplayTimetableByCourse(CModel);
-				//Print New Index info
-				System.out.println("New Index Number: " + newIndex);
-				DisplayTimetableByCourse(CModel);
-
-				if (getConfirmation(scan, "change") == 1) {
-					Stud_ChangeCourse(LoggedStudent, currentIndex, newIndex);
+				int avail = CheckCourseAvailability(newIndex,LoggedStudent,true);
+				if(avail == 4) {
+					System.out.println("Course class " + newIndex + " is crashed with your other course.\n");
+				}else {
+						
+					//Print Current Index info
+					CourseModel CModel = CourseRepo.GetCourseByIndexNumber(currentIndex);
+					System.out.println("Current Index Number: " + currentIndex);
+					DisplayTimetableByCourse(CModel);
+					//Print New Index info
+					System.out.println("New Index Number: " + newIndex);
+					DisplayTimetableByCourse(CModel);
+	
+					int isConfirmed = getConfirmation("change");
 					
-					System.out.println("Course class has been changed from " + currentIndex + " to " + newIndex);
-					isChanged = true;
+					while (isConfirmed == -2) {
+						System.out.println("Invalid input, please try again.");
+						isConfirmed = getConfirmation("change");
+					}
+					if (isConfirmed == 1) {
+						Stud_ChangeCourse(LoggedStudent, currentIndex, newIndex);
+						
+						System.out.println("Course class has been changed from " + currentIndex + " to " + newIndex);
+						isChanged = true;
+					}
+
 				}
 			}
 		}
 		return isChanged;
 	}
 	
-	public boolean SwopIndex(String StudentID,Scanner scan) {
+	public boolean SwopIndex(String StudentID) {
 		
 		boolean isSwopped = false;
 		
 		System.out.println("Enter your Course index number (-1 return to main page): ");
-		int CourseIndex = scan.nextInt();
+		int CourseIndex = validationInt();
 		if (CourseIndex == -1) {
 			return true;
 		}
+		while (CourseIndex == -2) {
+			System.out.println("Invalid input, re-enter your Course index number (-1 return to main page): ");
+			CourseIndex = validationInt();
+		}
 		
-		
-		int isRegister = CheckIsregisteredCourse(CourseIndex,LoggedStudent);
+		int isRegister = CheckCourseAvailability(CourseIndex,LoggedStudent,false);
 		if (isRegister == -1) {
 			System.out.println("You haven't registered course class " + CourseIndex + "\n");
 			return false;
@@ -348,6 +467,7 @@ public class StudentController {
 			return false;
 		}
 		else {
+			Scanner scan = new Scanner(System.in);
 			System.out.println("Enter peer's UserID: ");
 			String PeerUserID = scan.next();
 			System.out.println("Enter peer's Password: ");
@@ -368,7 +488,7 @@ public class StudentController {
 				int check = -1;
 				CourseModel studentClass = CourseRepo.GetCourseByIndexNumber(CourseIndex);
 				CourseModel peerClass = CourseRepo.GetCourseByIndexNumber(PeerCourseIndex);
-				check = CheckIsregisteredCourse(PeerCourseIndex, checkIsStud);
+				check = CheckCourseAvailability(PeerCourseIndex, checkIsStud,false);
 			
 				if (check == -1 || check ==3 ){
 					System.out.println(PeerUserID + " hasn't registered course class " + PeerCourseIndex + "\n");
@@ -381,7 +501,12 @@ public class StudentController {
 					DisplayTimetableByCourse(studentClass);
 					System.out.println("Student 2 - Matric: " + checkIsStud.getMatricNumber() + " Index number: " + PeerCourseIndex);
 					DisplayTimetableByCourse(peerClass);
-					if (getConfirmation(scan, "swap") == 1) {
+					int isConfirmed = getConfirmation("swop");
+					while (isConfirmed == -2) {
+						System.out.println("Invalid input, please try again.");
+						isConfirmed = getConfirmation("swop");
+					}
+					if (isConfirmed == 1) {
 						//change student 1 index to student 2 index
 					
 						Stud_ChangeCourse(LoggedStudent, CourseIndex, PeerCourseIndex);
@@ -409,7 +534,7 @@ public class StudentController {
 					"Course Code", "Course Name","Group", "Class Type", "Day", "Time", "Venue");
 			
 			for(int i = 0; i < courseTimetable.size(); i++) {
-				System.out.format("|%-12s | %-40s | %-5s | %-12s | %-10s | %-10s | %-5s |\n", CModel.getCourseCode(), CModel.getCourseName(),courseTimetable.get(i).getGroup(), courseTimetable.get(i).getType(),courseTimetable.get(i).getDay(),courseTimetable.get(i).getTime(),courseTimetable.get(i).getVenue());
+				System.out.format("|%-12s | %-40s | %-5s | %-12s | %-10s | %-10s | %-5s |\n", CModel.getCourseCode(), CModel.getCourseName(),courseTimetable.get(i).getGroup(), courseTimetable.get(i).getType(),courseTimetable.get(i).getDay(),courseTimetable.get(i).getTimeStart() + "-" + courseTimetable.get(i).getTimeEnd(),courseTimetable.get(i).getVenue());
 			}
 			
 		}else {
@@ -418,12 +543,15 @@ public class StudentController {
 	
 	}
 	
-	public int getConfirmation(Scanner scan, String action) {
+	
+	public int getConfirmation (String action) {
 		System.out.println("\nPlease select an option:\n" +
 				"1. Confirm to " + action + "?\n"+
-				"2. Cancel\n");
-		return scan.nextInt();
+				"2. Cancel\n"+
+				"Enter your choice: ");
+		return validationInt();
 	}
+	
 	
 	public static void PushWaitListToAllocateList(int CourseIndex) {
 		CourseModel CModel = CourseRepo.GetCourseByIndexNumber(CourseIndex);
@@ -436,7 +564,7 @@ public class StudentController {
 			  StudentModel Stud = StudRepo.GetStudentByStudID(WModel.getUserID());
 			  
 			  Date date = new Date();
-			  AllocatedListingModel AModel = new AllocatedListingModel(WModel.getCourseIndex(), WModel.getUserID(), date);
+			  AllocatedListingModel AModel = new AllocatedListingModel(WModel.getCourseIndex(),CModel.getCourseCode(), WModel.getUserID(), date);
 			  AllocatedListingRepo.add(AModel);
 			  
 			  ArrayList<String> SendInfo_CurrentUser = new ArrayList<String>();

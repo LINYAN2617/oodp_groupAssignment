@@ -1,14 +1,23 @@
 package main;
 import DBRepo.DBContext;
 import DBRepo.CourseRepo;
+import DBRepo.AllocatedListingRepo;
 
 import DBRepo.TimeTableRepo;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Scanner;
 
+//import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
+import java.util.List;
+
 import model.AdminModel;
+import model.AllocatedListingModel;
 import model.CourseModel;
+import model.StudentModel;
 import model.TimeTableModel;
 public class AdminController {
 
@@ -18,9 +27,12 @@ public class AdminController {
 			
 	}
 	
+
+	
 	public void StartAdminPage() {
 		System.out.println ("Successfully logged in! ");
 		System.out.println ("Welcome (Admin) " + LoggedAdmin.getFullName()+"\n");
+		
 		System.out.println ("----------------Admin Page Menu---------------");
 		
 		System.out.println(
@@ -43,6 +55,7 @@ public class AdminController {
 
 				break;
 			case 2:
+				AddStudent();
 				break;
 			case 3:
 				addCourseView();
@@ -56,7 +69,7 @@ public class AdminController {
 				CourseModel CModel = CourseRepo.GetCourseByIndexNumber(courseIndex);
 				
 				if(CModel == null) {
-					System.out.println("Course not found, please try again");
+					System.out.println("Course not found, please try again!\n");
 					 
 				}else {
 					//CModel.getIndexNumber();
@@ -67,18 +80,30 @@ public class AdminController {
 				
 				break;
 			case 5:
-				System.out.println("Please Enter the Course Index Number: ");
-				Scanner sc2 = new Scanner(System.in);
-				courseIndex = sc2.nextInt();
-				//Wait for student code
+				CheckSlot();
+				break;
 			case 6:
+				PrintSLByIndex();
 				break;
 			case 7:
+				PrintSLByCour();
 				break;
 			case 8:
 				break;
 		}
+			System.out.println ("----------------Admin Page Menu---------------");
 			
+			System.out.println(
+					"1. Edit student access period\n" + 
+					"2. Add a student\n"+
+					"3. Add a course\n"+
+					"4. Update a course\n"+
+					"5. Check available slot for an index number\n"+
+					"6. Print student list by index number\n"+
+					"7. Print student list by course\n"+
+					"8. Log out");
+			System.out.println("Please Select Function: ");
+			choice = sc.nextInt();
 		}
 	}
 	
@@ -89,7 +114,7 @@ public class AdminController {
 		System.out.format("|%-13s | %-5s | %-5s | %-5s | %-10s| %-4s |\n", "Course Index", "Type","Group","Day", "Time", "Venue");
 		
 		for (int i=0;i<timeTableList.size();i++) {
-			System.out.format("|%-13s | %-5s | %-5s | %-5s | %-10s| %-4s |\n", timeTableList.get(i).getIndexNumber(),timeTableList.get(i).getType(),timeTableList.get(i).getGroup(),timeTableList.get(i).getDay(),timeTableList.get(i).getTime(),timeTableList.get(i).getVenue());
+			System.out.format("|%-13s | %-5s | %-5s | %-5s | %-10s| %-4s |\n", timeTableList.get(i).getIndexNumber(),timeTableList.get(i).getType(),timeTableList.get(i).getGroup(),timeTableList.get(i).getDay(),timeTableList.get(i).getTimeStart() + "-" + timeTableList.get(i).getTimeEnd(),timeTableList.get(i).getVenue());
 		}
 	}
 	
@@ -133,19 +158,21 @@ public class AdminController {
 			break;
 		}
 		
-		System.out.println("Please Enter the Time(HH:MM-HH:MM): ");
+		System.out.println("Please Enter the Time Start (HHMM): ");
 		String time=sc.next();
-		timeTable.setTime(time);
+		timeTable.setTimeStart(time);
 		// set input format
-		
+		System.out.println("Please Enter the Time End (HHMM): ");
+		String time2=sc.next();
+		timeTable.setTimeEnd(time2);
 		
 		System.out.println("Please Enter the Venue: ");
 		String Venue=sc.next();
 		timeTable.setVenue(Venue);
 		
 		System.out.format("\n|%-13s | %-5s | %-5s | %-5s | %-10s| %-5s |\n", "Course Index", "Type","Group","Day", "Time", "Venue");
-		System.out.format("|%-13s | %-5s | %-5s | %-5s | %-10s| %-5s |\n",timeTable.getIndexNumber(),timeTable.getType(),timeTable.getGroup(),timeTable.getDay(),timeTable.getTime(),timeTable.getVenue());
-
+		System.out.format("|%-13s | %-5s | %-5s | %-5s | %-10s| %-5s |\n",timeTable.getIndexNumber(),timeTable.getType(),timeTable.getGroup(),timeTable.getDay(),timeTable.getTimeStart() + "-" + timeTable.getTimeEnd() ,timeTable.getVenue());
+ 
 		return timeTable;
 	}
 	
@@ -245,6 +272,7 @@ public class AdminController {
 			System.out.print("CourseName:");
 			String CourseName;
 			CourseName = sc.next();
+			CourseName += sc.nextLine();
 			newCourse.setCourseName(CourseName);
 			
 			System.out.println("Please Select CourseType: \n"+
@@ -302,6 +330,7 @@ public class AdminController {
 			switch(select3) {
 			case 1:
 				CourseRepo.add(newCourse);
+				DBRepo.TimeTableRepo.Add(NewTimeTableList);
 				System.out.println("/nSuccessfully Added Course!/n");
 				StartAdminPage();
 				break;
@@ -360,6 +389,7 @@ public class AdminController {
 					System.out.println("Please enter new Course Name:");
 					String CourseName;
 					CourseName = sc.next();
+					CourseName += sc.nextLine();
 					
 					System.out.println(
 							"\n1. Confirm\n"+
@@ -422,7 +452,7 @@ public class AdminController {
 					System.out.print("Please enter new School:");
 					String School;
 					School = sc.next();
-					
+					School += sc.nextLine();
 					
 					
 					System.out.println(
@@ -505,9 +535,8 @@ public class AdminController {
 					int select7 = sc.nextInt();
 					switch(select7) {
 					case 1:
-						//Remove old time table list
-						//add new time table list
-						System.out.println("/nSuccessfully updated New Time Table!/n");
+						DBRepo.TimeTableRepo.Update(CMtimeTableList, NewtimeTableList);
+						System.out.println("\nSuccessfully updated New Time Table!\n");
 						updateCourseView(CModel);
 						break;
 					case 2:
@@ -544,6 +573,9 @@ public class AdminController {
 		
 		public void EditAccessTime() {
 			//return existing student access period
+			
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
 			System.out.println("Please select the option:\n"+
 			"1. Edit the access period.\n"+
 			"-1. Exit.");
@@ -554,7 +586,16 @@ public class AdminController {
 			case 1:
 				System.out.println("....................................");
 				System.out.println("Access Start Time:");
-				int StartTime=sc.nextInt();
+				String StartTime;
+				StartTime=sc.next();
+				StartTime+=sc.nextLine();
+				Date start=null;
+				try {
+					start = formatter.parse(StartTime);
+				}catch(java.text.ParseException e) {
+					System.out.println(e.getMessage());
+				}
+				
 				System.out.println("Access End Time:");
 				int EndTime=sc.nextInt();
 				break;
@@ -567,14 +608,11 @@ public class AdminController {
 		
 		public void AddStudent() {
 			Scanner sc = new Scanner(System.in);
-			System.out.print("..............Add a Student.....................");
-			//UserModel newStudent=new UserModel();
-			//StudentModel;
-			//int newindexNumber=DBContext.CourseModelListing.get(DBContext.CourseModelListing.size()-1).getIndexNumber()+1;
-			//remenber to set  UserType, AccessTimeStart and AccessTimeEnd;
+			System.out.println("..............Add a Student.....................");
 
 			System.out.println("FirstName:");
 			String FirstName = sc.next();
+			//newStudent.
 			System.out.println("LastName:");
 			String LastName = sc.next();
 			System.out.print("Gender:");
@@ -591,11 +629,205 @@ public class AdminController {
 			String UserID = sc.next();
 			System.out.println("Password:");
 			String Password = sc.next();
-	
+			char UserType = 'S' ;
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			
+			String StartTime="2020-11-21 08:00:00";
+			Date start=null;
+			try {
+				start = formatter.parse(StartTime);
+			}catch(java.text.ParseException e) {
+				System.out.println(e.getMessage());
+			}
+			
+			String EndTime="2020-11-21 08:00:00";
+			Date end=null;
+			try {
+				end = formatter.parse(StartTime);
+			}catch(java.text.ParseException e) {
+				System.out.println(e.getMessage());
+			}
+			
+			
+			
+			Date AccessTimeStart=start;
+			Date AccessTimeEnd=end;
+			StudentModel newStudent= new StudentModel(UserID,Password,FirstName,LastName,Gender,Nationality,UserType,AccessTimeStart,AccessTimeEnd);
+			newStudent.setEmail(Email);
+			newStudent.setMatricNumber(MatricNumber);
+			newStudent.setPhoneNumber(PhoneNumber);
+			DBRepo.StudRepo.add(newStudent);
+			
+			System.out.println(
+					"1. Add other student\n"+
+					"2. Back\n"+
+					"Please select an option:" );
+			int select = sc.nextInt();
+			switch(select) {
+			case 1:
+				AddStudent();
+				break;
+			case 2:
+				StartAdminPage();
+				break;
+			}
+			
 		}
 		
-	
+	public void CheckSlot() {
+		ArrayList<AllocatedListingModel> StuList=new ArrayList<AllocatedListingModel>();
 		
-		public void PrintSLByCour() {}
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Please enter the course index number:");
+		int IndexNumber=sc.nextInt();
+		if(checkIndex(IndexNumber) == false) {
+			CheckSlot(); 
+		}
+		else {
+		StuList=DBRepo.AllocatedListingRepo.readAllocateListingByCourseIndex(IndexNumber);
+		CourseModel CModel = CourseRepo.GetCourseByIndexNumber(IndexNumber);
+		int slot;
+		slot= CModel.getVacancy()-StuList.size();
+		System.out.println("The amount of slot available for this course: "+ slot+"\n");
+		}
+		System.out.println(
+				"1. Check Other Index Number\n"+
+				"2. Back\n"+
+				"Please select an option:" );
+		int select7 = sc.nextInt();
+		switch(select7) {
+		case 1:
+			CheckSlot();
+			break;
+		case 2:
+			StartAdminPage();
+			break;
+		}
+	}
+	
+	public void PrintSLByIndex() {
+			List<String> StuIDList=new ArrayList<String>();
+			ArrayList<AllocatedListingModel> StuList=new ArrayList<AllocatedListingModel>();
+			StudentModel SModel=null;
+			
+			Scanner sc = new Scanner(System.in);
+			System.out.println("Please enter the course index number:");
+			int IndexNumber=sc.nextInt();
+			
+			
+			if(checkIndex(IndexNumber) == false) {
+				PrintSLByIndex(); 
+			}
+			else {
+				StuList=DBRepo.AllocatedListingRepo.readAllocateListingByCourseIndex(IndexNumber);
+				for (int i=0;i<StuList.size();i++) {
+					StuIDList.add(StuList.get(i).getUserID());
+				}
+			
+				if(StuIDList.size() == 0) {
+					System.out.println("No student register this course.");
+				}
+				else {
+					System.out.println("..............The Student List of IndexNumber "+IndexNumber+"..................");
+					System.out.format("|%-13s | %-5s | %-10s |\n", "Student Name", "Gender","Nationality");
+					for (int i=0;i<StuIDList.size();i++) {
+						SModel=DBRepo.StudRepo.GetStudentByStudID(StuIDList.get(i));
+						System.out.format("|%-13s | %-5s | %-10s |\n", SModel.getFullName(), SModel.getGender(),SModel.getNationality());
+					}
+					System.out.println("");
+				}
+			}
+			
+			System.out.println(
+					"1. Check Other Index Number\n"+
+					"2. Back\n"+
+					"Please select an option:" );
+			int select7 = sc.nextInt();
+			switch(select7) {
+			case 1:
+				PrintSLByIndex();
+				break;
+			case 2:
+				StartAdminPage();
+				break;
+			}
+		}
+		
+			
+		
+		public void PrintSLByCour() {
+			
+			List<String> StuIDList=new ArrayList<String>();
+			ArrayList<AllocatedListingModel> StuList=new ArrayList<AllocatedListingModel>();
+			StudentModel SModel=null;
+			
+			Scanner sc = new Scanner(System.in);
+			System.out.println("Please enter the course code:");
+			String courseCode=sc.next();
+			
+			
+			if(checkCusCode(courseCode) == false) {
+				PrintSLByCour(); 
+			}
+			else {
+				StuList=DBRepo.AllocatedListingRepo.readAllocateListingByCourseCode(courseCode);
+				for (int i=0;i<StuList.size();i++) {
+					StuIDList.add(StuList.get(i).getUserID());
+				}
+			
+				if(StuIDList.size() == 0) {
+					System.out.println("No student register this course.");
+				}
+				else {
+					System.out.println("..............The Student List of Course Code "+courseCode+"..................");
+					System.out.format("|%-13s | %-5s | %-10s |\n", "Student Name", "Gender","Nationality");
+					for (int i=0;i<StuIDList.size();i++) {
+						SModel=DBRepo.StudRepo.GetStudentByStudID(StuIDList.get(i));
+						System.out.format("|%-13s | %-5s | %-10s |\n", SModel.getFullName(), SModel.getGender(),SModel.getNationality());
+					}
+					System.out.println("");
+				}
+			}
+			
+			System.out.println(
+					"1. Check Other Course Code\n"+
+					"2. Back\n"+
+					"Please select an option:" );
+			int select7 = sc.nextInt();
+			switch(select7) {
+			case 1:
+				PrintSLByCour();
+				break;
+			case 2:
+				StartAdminPage();
+				break;
+			}
+		}
+		
+		public boolean checkIndex(int CusIndexnumber) {
+			CourseModel CModel = CourseRepo.GetCourseByIndexNumber(CusIndexnumber);
+			boolean result;
+			if(CModel == null) {
+				System.out.println("Course not found, please try again!\n");
+				result=false;
+			}
+			else {
+				result=true;
+			}
+			return result;
+		}
+		
+		public boolean checkCusCode(String courseCode) {
+			CourseModel CusMode = CourseRepo.GetCourseByCourseCode(courseCode);
+			boolean result;
+			if(CusMode == null) {
+				System.out.println("Course not found, please try again!\n");
+				result=false;
+			}
+			else {
+				result=true;
+			}
+			return result;
+		}
 	
 }

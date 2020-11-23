@@ -156,8 +156,9 @@ public class DBContext {
 				// get individual 'fields' of the string separated by SEPARATOR
 				StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
 
-				int CourseIndex = Integer.parseInt(star.nextToken().trim());	// first token
-				String  UserID = star.nextToken().trim();	// second token
+				int CourseIndex = Integer.parseInt(star.nextToken().trim());	
+				String CourseCode = star.nextToken().trim();
+				String  UserID = star.nextToken().trim();	
 				Date  RegisterTime;
 				try {
 					RegisterTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(star.nextToken().trim());
@@ -166,7 +167,7 @@ public class DBContext {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				AllocatedListingModel AllocateItem = new AllocatedListingModel(CourseIndex,UserID,RegisterTime); 
+				AllocatedListingModel AllocateItem = new AllocatedListingModel(CourseIndex,CourseCode,UserID,RegisterTime); 
 				
 				// add to UserModel list
 
@@ -218,10 +219,11 @@ public class DBContext {
 				String  Type = star.nextToken().trim();	
 				int  Group = Integer.parseInt(star.nextToken().trim());
 				String  Day = star.nextToken().trim();	
-				String  Time = star.nextToken().trim();	
+				String  TimeStart = star.nextToken().trim();		
+				String  TimeEnd = star.nextToken().trim();
 				String  Venue = star.nextToken().trim();
 				
-				TimeTableModel TimeTableItem = new TimeTableModel(IndexNumber,Type,Group,Day,Time,Venue); 
+				TimeTableModel TimeTableItem = new TimeTableModel(IndexNumber,Type,Group,Day,TimeStart,TimeEnd,Venue); 
 				
 				// add to UserModel list
 

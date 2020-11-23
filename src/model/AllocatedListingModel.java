@@ -4,11 +4,14 @@ import java.util.Date;
 
 public class AllocatedListingModel {
 	private int CourseIndex;
+
+	private String CourseCode;
 	private String UserID;
 	private Date RegisterTime;
 	
-	public AllocatedListingModel(int CourseIndex, String UserID, Date RegisterTime) {
+	public AllocatedListingModel(int CourseIndex, String CourseCode, String UserID, Date RegisterTime) {
 		this.CourseIndex = CourseIndex;
+		this.CourseCode = CourseCode;
 		this.UserID = UserID;
 		this.RegisterTime = RegisterTime;
 	}
@@ -26,5 +29,7 @@ public class AllocatedListingModel {
 		return RegisterTime;
 	}
 	
-	
+	public String getCourseCode() {
+		return CourseCode;
+	}
 }

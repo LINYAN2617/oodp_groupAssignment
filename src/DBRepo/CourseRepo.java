@@ -24,6 +24,22 @@ public class CourseRepo {
         return CModel;
 	}
 	
+	public static CourseModel GetCourseByCourseCode(String CourseCode) {
+		CourseModel CModel =null;
+		
+        for (int i = 0 ; i < DBContext.CourseModelListing.size() ; i++) {
+        
+			if (DBContext.CourseModelListing.get(i).getCourseCode().equals(CourseCode)) {
+		
+				CModel =  DBContext.CourseModelListing.get(i);
+				break;
+
+			}
+		}
+
+        return CModel;
+	}
+	
 	public static void add(CourseModel CModel) {
 		DBContext.CourseModelListing.add(CModel);
 		save(DBContext.CourseModelListing);

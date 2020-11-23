@@ -22,13 +22,15 @@ public class AllocatedListingRepo {
 	public static void save(List<AllocatedListingModel> al)  {
 		
 		List<String> alw = new ArrayList<String>() ;
-		alw.add("CourseIndex|UserID|AllocatedTime");
+		alw.add("CourseIndex|CourseCode|UserID|AllocatedTime");
 		String SEPARATOR = DBContext.SEPARATOR;
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         for (int i = 0 ; i < al.size() ; i++) {
         		AllocatedListingModel alist = (AllocatedListingModel)al.get(i);
 				StringBuilder st =  new StringBuilder() ;
 				st.append(alist.getCourseIndex());
+				st.append(SEPARATOR);
+				st.append(alist.getCourseCode().trim());
 				st.append(SEPARATOR);
 				st.append(alist.getUserID().trim());
 				st.append(SEPARATOR);
@@ -61,6 +63,18 @@ public class AllocatedListingRepo {
 		for(int i=0; i< DBContext.AllocatedListing.size(); i++) {
 			
 			if(DBContext.AllocatedListing.get(i).getCourseIndex() == CourseIndex) {
+				AList.add(DBContext.AllocatedListing.get(i));
+			}
+		
+		}
+		return AList;
+	}
+	
+	public static ArrayList<AllocatedListingModel> readAllocateListingByCourseCode(String CourseCode){
+		ArrayList<AllocatedListingModel> AList = new ArrayList<AllocatedListingModel>();
+		for(int i=0; i< DBContext.AllocatedListing.size(); i++) {
+			
+			if(DBContext.AllocatedListing.get(i).getCourseCode().equals(CourseCode)) {
 				AList.add(DBContext.AllocatedListing.get(i));
 			}
 		

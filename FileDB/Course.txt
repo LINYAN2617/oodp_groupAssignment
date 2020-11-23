@@ -9,3 +9,4 @@ IndexNumber|CourseCode|CourserName|CourseType|Vacancy|School|AU
 8|CZ2004|HUMAN COMPUTER INTERACTION|Core|50|Computer Science|3
 9|MH1812|DISCRETE MATHEMATICS|Core|50|Computer Science|3
 10|MH1812|DISCRETE MATHEMATICS|Core|50|Computer Science|3
+11|CZ4004|tst course|CORE|4|computer science|3

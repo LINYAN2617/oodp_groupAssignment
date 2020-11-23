@@ -331,7 +331,7 @@ public class AdminController {
 			case 1:
 				CourseRepo.add(newCourse);
 				DBRepo.TimeTableRepo.Add(NewTimeTableList);
-				System.out.println("/nSuccessfully Added Course!/n");
+				System.out.println("\nSuccessfully Added Course!\n");
 				StartAdminPage();
 				break;
 			case 2:

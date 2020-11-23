@@ -1,6 +1,7 @@
-CourseIndex|Type|Group|Day|TimeStart|TimeEnd|Venue
+CourseIndex|Type|Group|Day|Time|Venue
 1|Lec|1|Monday|0930|1130|LT4
 2|Sem|1|Tuesday|1100|1300|LT6
 2|Lec|1|Tuesday|1330|1530|LT6
 3|Lec|1|Wednesday|1500|1800|LT6
 3|Sem|1|Tuesday|1830|2120|LT6
+11|Tut|2|Tus|1800|1900|tutorial

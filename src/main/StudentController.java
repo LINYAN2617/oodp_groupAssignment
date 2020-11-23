@@ -46,7 +46,7 @@ public class StudentController {
 					"3. Check Courses Registered\n" + 
 					"4. Check Vacancies Available\n"+
 					"5. Change Index Number of Course\n"+
-					"6. Swop Index Number with Another Student\n"+
+					"6. Swap Index Number with Another Student\n"+
 					"-1: To exit\n");
 	
 			System.out.println("Enter your choice: ");
@@ -179,10 +179,10 @@ public class StudentController {
 				}
 				break;
 			case 6:
-				boolean isSwopped = false;
-				while (!isSwopped) {
+				boolean isSwapped = false;
+				while (!isSwapped) {
 					
-					isSwopped = SwopIndex(LoggedStudent.getUserID());
+					isSwapped = SwapIndex(LoggedStudent.getUserID());
 				}
 				break;
 				
@@ -413,7 +413,7 @@ public class StudentController {
 			}else {
 				int avail = CheckCourseAvailability(newIndex,LoggedStudent,true);
 				if(avail == 4) {
-					System.out.println("Course class " + newIndex + " is crashed with your other course.\n");
+					System.out.println("Course class " + newIndex + " time table is crashed with your other course.\n");
 				}else {
 						
 					//Print Current Index info
@@ -443,9 +443,9 @@ public class StudentController {
 		return isChanged;
 	}
 	
-	public boolean SwopIndex(String StudentID) {
+	public boolean SwapIndex(String StudentID) {
 		
-		boolean isSwopped = false;
+		boolean isSwapped = false;
 		
 		System.out.println("Enter your Course index number (-1 return to main page): ");
 		int CourseIndex = validationInt();
@@ -501,35 +501,51 @@ public class StudentController {
 					DisplayTimetableByCourse(studentClass);
 					System.out.println("Student 2 - Matric: " + checkIsStud.getMatricNumber() + " Index number: " + PeerCourseIndex);
 					DisplayTimetableByCourse(peerClass);
-					int isConfirmed = getConfirmation("swop");
+					int isConfirmed = getConfirmation("Swap");
 					while (isConfirmed == -2) {
 						System.out.println("Invalid input, please try again.");
-						isConfirmed = getConfirmation("swop");
+						isConfirmed = getConfirmation("Swap");
 					}
 					if (isConfirmed == 1) {
 						//change student 1 index to student 2 index
 					
 						Stud_ChangeCourse(LoggedStudent, CourseIndex, PeerCourseIndex);
 						Stud_ChangeCourse(checkIsStud, CourseIndex, PeerCourseIndex);
-						
-						System.out.println(LoggedStudent.getMatricNumber() + 
+
+						System.out.println("Please wait...");
+						String message = LoggedStudent.getMatricNumber() + 
 								" - Index Number " + CourseIndex +
-								" has been successfully swopped with " + checkIsStud.getMatricNumber() +
-								" - Index Number " + PeerCourseIndex);
-						isSwopped = true;
+								" has been successfully Swapped with " + checkIsStud.getMatricNumber() +
+								" - Index Number " + PeerCourseIndex;
+						
+						  ArrayList<String> SendInfo_CurrentUser = new ArrayList<String>();
+						  SendInfo_CurrentUser.add(LoggedStudent.Email);
+						  SendInfo_CurrentUser.add("Course registration - Successfully swap the Course Index (" + CourseIndex + ") to Course Index ("+ PeerCourseIndex +"), Course Name (" + studentClass.getCourseName() + ")" );
+						  SendInfo_CurrentUser.add("Dear " + LoggedStudent.getFullName() +  ", \n\n" + message);
+						  EmailService.send(SendInfo_CurrentUser);
+						  
+						  ArrayList<String> SendInfo_Peer = new ArrayList<String>();
+						  SendInfo_Peer.add(checkIsStud.Email);
+						  SendInfo_Peer.add("Course registration - The Course Index (" + PeerCourseIndex + ") is swapped by " + LoggedStudent.getMatricNumber() + " " + LoggedStudent.getFullName() + " to Course Index ("+ CourseIndex +"), Course Name (" + studentClass.getCourseName() + ")" );
+						  SendInfo_Peer.add("Dear " + checkIsStud.getFullName() +  ", \n\n" + message);
+						  EmailService.send(SendInfo_Peer);
+						  
+						System.out.println(message);
+						System.out.println("\nAn email notification is sent to both student");
+						isSwapped = true;
 					}
 				}
 			}
 		}
-		return isSwopped;
+		return isSwapped;
 	}
 	
 	public void DisplayTimetableByCourse(CourseModel CModel) {
 		
-		ArrayList<TimeTableModel> courseTimetable = TimeTableRepo.GetTimeTableByCourseIndex(CModel.getIndexNumber());
+		ArrayList<TimeTableModel> courseTimetable = TimeTableRepo.readTimeTableByCourseIndex(CModel.getIndexNumber());
 				
 	
-		if(courseTimetable != null) { 
+		if(courseTimetable.size()>0) { 
 			System.out.format("|%-12s | %-40s | %-5s | %-12s | %-10s | %-10s | %-5s |\n", 
 					"Course Code", "Course Name","Group", "Class Type", "Day", "Time", "Venue");
 			

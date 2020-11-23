@@ -44,7 +44,6 @@ public class MainProgram {
 					Password = scan.next();
 				} else {
 	
-					System.out.println ("Password:");
 					Password = LoginHandling.getPasswordMasked(cons, "Password:");
 				}
 				

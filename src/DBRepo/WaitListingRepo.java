@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import File.FileHandle;
 import model.AllocatedListingModel;
+import model.DBContext;
 import model.WaitListingModel;
 
 public class WaitListingRepo {
@@ -16,7 +18,7 @@ public class WaitListingRepo {
 		ArrayList<WaitListingModel> wList = new ArrayList<WaitListingModel>();
 		for(int i=0; i< DBContext.WaitListing.size(); i++) {
 			
-			if(DBContext.WaitListing.get(i).getUserID() == StudentID) {
+			if(DBContext.WaitListing.get(i).getUserID().equals(StudentID)) {
 				wList.add(DBContext.WaitListing.get(i));
 			}
 		
@@ -56,6 +58,8 @@ public class WaitListingRepo {
 				StringBuilder st =  new StringBuilder() ;
 				st.append(wlist.getCourseIndex());
 				st.append(SEPARATOR);
+				st.append(wlist.getCourseCode());
+				st.append(SEPARATOR);
 				st.append(wlist.getUserID().trim());
 				st.append(SEPARATOR);
 				st.append(formatter.format(wlist.getApplyTime()));
@@ -87,6 +91,38 @@ public class WaitListingRepo {
 		
 		return WModel;
 		
+		
+	}
+	
+	public static ArrayList<WaitListingModel> GetWaitListModelByCourseCode(String CourseCode) {
+		ArrayList<WaitListingModel> Wlist = new ArrayList<WaitListingModel>();
+		
+		for(int i =0; i<DBContext.WaitListing.size(); i++) {
+			
+			if(DBContext.WaitListing.get(i).getCourseCode().equals(CourseCode)) {
+				WaitListingModel WModel = DBContext.WaitListing.get(i);
+				Wlist.add(WModel);
+			}
+			
+		}
+		
+		return Wlist;
+		
+	}
+	
+	public static ArrayList<WaitListingModel> GetWaitListModelByCourseCodeByStudID(String CourseCode,String StudID) {
+		ArrayList<WaitListingModel> Wlist = new ArrayList<WaitListingModel>();
+		
+		for(int i =0; i<DBContext.WaitListing.size(); i++) {
+			
+			if(DBContext.WaitListing.get(i).getCourseCode().equals(CourseCode) && DBContext.WaitListing.get(i).getUserID().equals(StudID)) {
+				WaitListingModel WModel = DBContext.WaitListing.get(i);
+				Wlist.add(WModel);
+			}
+			
+		}
+		
+		return Wlist;
 		
 	}
 }

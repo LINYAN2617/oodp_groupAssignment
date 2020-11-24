@@ -1,4 +1,4 @@
-package DBRepo;
+package File;
 
 import java.io.FileInputStream;
 import java.io.FileWriter;
@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileHandle {
-
+	  
 	  public static void write(String fileName, List<?> data) throws IOException  {
 		    PrintWriter out = new PrintWriter(new FileWriter(fileName));
-	
+		    
 		    try {
 				for (int i =0; i < data.size() ; i++) {
 		      		out.println((String)data.get(i));
@@ -22,7 +22,7 @@ public class FileHandle {
 		      out.close();
 		    }
 		  }
-
+	  
 	  /** Read the contents of the given file. */
 	  public static List<String> read(String fileName) throws IOException {
 		List<String> data = new ArrayList<String>() ;

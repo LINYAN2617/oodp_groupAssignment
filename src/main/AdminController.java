@@ -1,20 +1,15 @@
 package main;
-import DBRepo.DBContext;
+import model.DBContext;
 import DBRepo.StudRepo;
 import DBRepo.CourseRepo;
 import DBRepo.AllocatedListingRepo;
 
 import DBRepo.TimeTableRepo;
 
-import java.security.spec.KeySpec;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 import java.util.Scanner;
-
-import main.LoginController;
-//import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import java.util.List;
 
@@ -23,7 +18,6 @@ import model.AllocatedListingModel;
 import model.CourseModel;
 import model.StudentModel;
 import model.TimeTableModel;
-import main.LoginController;
 public class AdminController{
 
 	private static AdminModel LoggedAdmin;
@@ -45,10 +39,7 @@ public class AdminController{
 	}
 	
 	public void StartAdminPage() {
-		System.out.println ("Successfully logged in! ");
-		System.out.println ("Welcome (Admin) " + LoggedAdmin.getFullName()+"\n");
-		
-
+	
 		int option = 0;
 		while (option != -1) {
 			

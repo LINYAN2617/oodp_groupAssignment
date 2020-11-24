@@ -1,4 +1,4 @@
-package DBRepo;
+package model;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -6,14 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-import model.AdminModel;
-import model.AllocatedListingModel;
-import model.CourseModel;
-import model.StudentModel;
-import model.TimeTableModel;
-import model.WaitListingModel;
-
-import model.NotificationSettingModel;
+import DBRepo.AllocatedListingRepo;
+import DBRepo.TimeTableRepo;
+import DBRepo.WaitListingRepo;
+import File.FileHandle;
 public class DBContext {
 	
 	public static FileHandle File= new FileHandle();
@@ -128,6 +124,7 @@ public class DBContext {
 				StringTokenizer star = new StringTokenizer(st , SEPARATOR);	// pass in the string to the string tokenizer using delimiter ","
 
 				int CourseIndex = Integer.parseInt(star.nextToken().trim());	// first token
+				String CourseCode = star.nextToken().trim();
 				String  UserID = star.nextToken().trim();	// second token
 				Date  ApplyTime;
 				try {
@@ -137,7 +134,7 @@ public class DBContext {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				WaitListingModel WaitItem = new WaitListingModel(CourseIndex,UserID,ApplyTime); 
+				WaitListingModel WaitItem = new WaitListingModel(CourseIndex,CourseCode,UserID,ApplyTime); 
 				
 				// add to UserModel list
 

@@ -1,5 +1,6 @@
 package DBRepo;
 
+import model.DBContext;
 import model.NotificationSettingModel;
 
 public class NotificationRepo {

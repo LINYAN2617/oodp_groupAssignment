@@ -3,7 +3,6 @@ import java.util.Date;
 import java.util.Scanner;
 
 import DBRepo.AdminRepo;
-import DBRepo.DBContext;
 import model.*;
 
 import java.io.Console;
@@ -93,7 +92,10 @@ public class MainProgram {
 	}
 	
 	public static void DisplayAdminScreen() {
+		System.out.println ("Successfully logged in! ");
+		System.out.println ("Welcome (Admin) " + LoggedAdmin.getFullName()+"\n");
 		
+
 		AdminController AdminFunc = new AdminController(LoggedAdmin);
 		AdminFunc.StartAdminPage();
 		
@@ -101,7 +103,9 @@ public class MainProgram {
 	
 	
 	public static void DisplayStudentScreen() {
-		
+		System.out.println ("Successfully logged in! ");
+		System.out.println ("Welcome (Student) " + LoggedStudent.getFullName());
+
 		StudentController StudFunc = new StudentController(LoggedStudent);
 		StudFunc.StartStudPage();
 		

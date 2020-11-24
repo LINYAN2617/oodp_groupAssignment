@@ -1,1 +1,2 @@
-CourseIndex|UserID|ApplyTime
+CourseIndex|CourseCode|UserID|ApplyTime
+2|CZ2002|STUD03|2020-11-24 22:06:07

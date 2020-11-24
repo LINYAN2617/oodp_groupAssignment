@@ -1,13 +1,11 @@
 IndexNumber|CourseCode|CourserName|CourseType|Vacancy|School|AU
-1|CZ2002|Object-Oriented Design & Programming|Core|50|Computer Science|3
-2|CZ2002|Object-Oriented Design & Programming|Core|50|Computer Science|3
-3|CZ2001|ALGORITHMS|Core|30|Computer Science|4
-4|CZ3003|TESTCourseName|Core|2|Computer Science|3
-5|CZ2003|COMPUTER GRAPHICS & VISUAL|Core|50|COMPUTER GRAPHICS & VISUAL|4
-6|CZ2003|COMPUTER GRAPHICS & VISUAL|Core|50|Computer Science|3
-7|CZ2004|HUMAN COMPUTER INTERACTION|Core|50|Computer Science|3
-8|CZ2004|HUMAN COMPUTER INTERACTION|Core|50|Computer Science|3
-9|MH1812|DISCRETE MATHEMATICS|Core|50|Computer Science|3
-10|MH1812|DISCRETE MATHEMATICS|Core|50|Computer Science|3
-11|CZ4004|tst course|CORE|4|computer science|3
-12|CZ5005|TEST Name|CORE|4|TEST School|5
+1|CZ2002|Object-Oriented Design & Programming|Core|3|Computer Science|3
+2|CZ2002|Object-Oriented Design & Programming|Core|3|Computer Science|3
+3|CZ2001|ALGORITHMS|Core|3|Computer Science|3
+4|CZ2001|ALGORITHMS|Core|3|Computer Science|3
+5|CZ2003|COMPUTER GRAPHICS & VISUAL|Core|3|Computer Science|3
+6|CZ2003|COMPUTER GRAPHICS & VISUAL|Core|3|Computer Science|3
+7|CZ2004|HUMAN COMPUTER INTERACTION|Core|3|Computer Science|3
+8|CZ2004|HUMAN COMPUTER INTERACTION|Core|3|Computer Science|3
+9|MH1812|DISCRETE MATHEMATICS|Core|3|Computer Science|15
+10|MH1812|DISCRETE MATHEMATICS|Core|3|Computer Science|15

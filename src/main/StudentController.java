@@ -217,7 +217,7 @@ public class StudentController {
 			WaitListingRepo.add(wlist);
 			LoggedStudent.addWaitListing(wlist);
 			
-			returnMessage = "Course Vancancy is full, your request is added in waiting list.";
+			returnMessage = "Course Vacancy is full, your request is added in waiting list.";
 			System.out.println(returnMessage);
 			
 			ArrayList<String> SendInfo = new ArrayList<String>();
@@ -421,7 +421,7 @@ public class StudentController {
 			
 		}
 		
-		if(AU >= 21) {
+		if(AU > 21) {
 			return 3;
 		}
 
@@ -449,7 +449,7 @@ public class StudentController {
 				System.out.format("Course class %d and Course Class %d are not for the same course. \n\n", currentIndex, newIndex);
 			}
 			else if (newClass.getVacancy() <= AllocatedListingRepo.getTakenSlotByCourseIndex(newIndex)) {
-				System.out.println("Course class " + newIndex + " Vancancy is full.\n");
+				System.out.println("Course class " + newIndex + " Vacancy is full.\n");
 			}else {
 				int avail = checkCourseAvailability(newIndex,LoggedStudent,true,false);
 				if(avail == 4) {
@@ -459,10 +459,10 @@ public class StudentController {
 					//Print Current Index info
 					CourseModel CModel = CourseRepo.getCourseByIndexNumber(currentIndex);
 					System.out.println("Current Index Number: " + currentIndex);
-					displayTimetableByCourse(CModel);
+					displayTimetableByCourse(CModel,currentIndex);
 					//Print New Index info
 					System.out.println("New Index Number: " + newIndex);
-					displayTimetableByCourse(CModel);
+					displayTimetableByCourse(CModel,newIndex);
 	
 					int isConfirmed = getConfirmation("change");
 					
@@ -539,10 +539,10 @@ public class StudentController {
 				else {
 					System.out.println("Student 1 - Matric: " + LoggedStudent.getMatricNumber() + ", Index number: " + CourseIndex );
 					System.out.println("TimeTable" );
-					displayTimetableByCourse(studentClass);
+					displayTimetableByCourse(studentClass,CourseIndex);
 					System.out.println("Student 2 - Matric: " + checkIsStud.getMatricNumber() + " Index number: " + PeerCourseIndex);
 					System.out.println("TimeTable" );
-					displayTimetableByCourse(peerClass);
+					displayTimetableByCourse(peerClass,PeerCourseIndex);
 					int isConfirmed = getConfirmation("Swap");
 					while (isConfirmed == -2) {
 						System.out.println("Invalid input, please try again.");
@@ -582,9 +582,9 @@ public class StudentController {
 		return isSwapped;
 	}
 	
-	public void displayTimetableByCourse(CourseModel CModel) {
+	public void displayTimetableByCourse(CourseModel CModel,int CourseIndex) {
 		
-		ArrayList<TimeTableModel> courseTimetable = TimeTableRepo.readTimeTableByCourseIndex(CModel.getIndexNumber());
+		ArrayList<TimeTableModel> courseTimetable = TimeTableRepo.readTimeTableByCourseIndex(CourseIndex);
 				
 	
 		if(courseTimetable.size()>0) { 

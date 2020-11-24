@@ -87,7 +87,7 @@ public class CourseRepo {
 	}
 	
 	
-	public int GetNewCourseIndexNumber() {
+	public static int getNewCourseIndexNumber() {
 		if(DBContext.CourseModelListing.size()-1 == -1) {
 			return 1;
 		}

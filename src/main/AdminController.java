@@ -240,9 +240,8 @@ public class AdminController{
 	}
 		
 		public void addCourseView() {
-			int newindexNumber=DBContext.CourseModelListing.get(DBContext.CourseModelListing.size()-1).getIndexNumber()+1;
 			
-			//int newindexNumber=CourseRepo.GetNewCourseIndexNumber();   Can't call CourseRepo.GetNewCourseIndexNumber()
+			int newindexNumber = CourseRepo.getNewCourseIndexNumber();  
 			ArrayList<TimeTableModel> NewTimeTableList=null;
 			CourseModel newCourse = new CourseModel();
 			Scanner sc = new Scanner(System.in);

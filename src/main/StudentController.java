@@ -88,7 +88,7 @@ public class StudentController {
 						}
 						
 						if(isConfirmed == 1)  {
-							int isRegistered = checkCourseAvailability(returnCModel.getIndexNumber(),LoggedStudent,false);
+							int isRegistered = checkCourseAvailability(returnCModel.getIndexNumber(),LoggedStudent,false,true);
 							if (isRegistered == -1) {
 								
 								studAddCourse(LoggedStudent.getUserID(), returnCModel);
@@ -289,8 +289,7 @@ public class StudentController {
 	}
 	
 	public static void studChangeCourse(StudentModel Student, int dropIndex, int addIndex) {
-		ArrayList<AllocatedListingModel> AList = new ArrayList<AllocatedListingModel>();
-		AList = AllocatedListingRepo.readAllocateListingByStudentID(Student.getUserID());
+		ArrayList<AllocatedListingModel> AList = AllocatedListingRepo.readAllocateListingByStudentID(Student.getUserID());
 		for (int i = 0; i<AList.size(); i++) {
 			if (AList.get(i).getCourseIndex() == dropIndex) {
 				AllocatedListingRepo.remove(AList.get(i));
@@ -367,20 +366,34 @@ public class StudentController {
 		
 	}
 	
-	public int checkCourseAvailability(int CourseIndex, StudentModel Stud, boolean isforchangeIndex) {
+	public int checkCourseAvailability(int CourseIndex, StudentModel Stud, boolean IsforchangeIndex, boolean Isforaddcourse) {
 		int AU = 0;
 		CourseModel newCModel = CourseRepo.getCourseByIndexNumber(CourseIndex);
-		if(!isforchangeIndex) {
-				
+		if(!IsforchangeIndex) {
+		
 			for (AllocatedListingModel al : Stud.getAllocateListing()) { 
-				if (al.getCourseCode().equals(newCModel.getCourseCode())) { 
-					
-					return 1;
+				
+				if(!Isforaddcourse) {
+					if (al.getCourseIndex() == newCModel.getIndexNumber()) { 
+						
+						return 1;
+					}else {
+						if(checkIsCrashTimeTable(CourseIndex, Stud) == 4) {
+							return 4;
+						};
+					}
 				}else {
-					if(checkIsCrashTimeTable(CourseIndex, Stud) == 4) {
-						return 4;
-					};
+					if (al.getCourseCode().equals(newCModel.getCourseCode())) { 
+						
+						return 1;
+					}else {
+						if(checkIsCrashTimeTable(CourseIndex, Stud) == 4) {
+							return 4;
+						};
+					}
 				}
+				
+				
 				AU += CourseRepo.getCourseByIndexNumber(al.getCourseIndex()).getAU();
 			}
 
@@ -419,7 +432,7 @@ public class StudentController {
 		ArrayList<AllocatedListingModel> AList = new ArrayList<AllocatedListingModel>();
 		AList = LoggedStudent.AllocateListing;
 		boolean isChanged = false;
-		int isRegister = checkCourseAvailability(currentIndex,LoggedStudent,false);
+		int isRegister = checkCourseAvailability(currentIndex,LoggedStudent,false,false);
 		if (isRegister == -1) {
 			System.out.println("You haven't registered course class " + currentIndex + "\n");
 		}
@@ -438,7 +451,7 @@ public class StudentController {
 			else if (newClass.getVacancy() <= AllocatedListingRepo.getTakenSlotByCourseIndex(newIndex)) {
 				System.out.println("Course class " + newIndex + " Vancancy is full.\n");
 			}else {
-				int avail = checkCourseAvailability(newIndex,LoggedStudent,true);
+				int avail = checkCourseAvailability(newIndex,LoggedStudent,true,false);
 				if(avail == 4) {
 					System.out.println("Course class " + newIndex + " time table is crashed with your other course.\n");
 				}else {
@@ -484,7 +497,7 @@ public class StudentController {
 			CourseIndex = validationInt();
 		}
 		
-		int isRegister = checkCourseAvailability(CourseIndex,LoggedStudent,false);
+		int isRegister = checkCourseAvailability(CourseIndex,LoggedStudent,false,false);
 		if (isRegister == -1) {
 			System.out.println("You haven't registered course class " + CourseIndex + "\n");
 			return false;
@@ -515,7 +528,7 @@ public class StudentController {
 				int check = -1;
 				CourseModel studentClass = CourseRepo.getCourseByIndexNumber(CourseIndex);
 				CourseModel peerClass = CourseRepo.getCourseByIndexNumber(PeerCourseIndex);
-				check = checkCourseAvailability(PeerCourseIndex, checkIsStud,false);
+				check = checkCourseAvailability(PeerCourseIndex, checkIsStud,false,false);
 			
 				if (check == -1 || check ==3 ){
 					System.out.println(PeerUserID + " hasn't registered course class " + PeerCourseIndex + "\n");
@@ -539,7 +552,7 @@ public class StudentController {
 						//change student 1 index to student 2 index
 					
 						studChangeCourse(LoggedStudent, CourseIndex, PeerCourseIndex);
-						studChangeCourse(checkIsStud, CourseIndex, PeerCourseIndex);
+						studChangeCourse(checkIsStud,PeerCourseIndex,  CourseIndex);
 
 						System.out.println("Please wait...");
 						String message = LoggedStudent.getMatricNumber() + 

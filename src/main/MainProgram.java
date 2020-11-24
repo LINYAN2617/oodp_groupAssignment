@@ -2,7 +2,7 @@ package main;
 import java.util.Date;
 import java.util.Scanner;
 
-import DBRepo.AdminRepo;
+import dbrepo.AdminRepo;
 import model.*;
 
 import java.io.Console;
@@ -18,7 +18,7 @@ public class MainProgram {
 		
 	}
 	
-	public static void ProgramInterface() {
+	public static void programInterface() {
 		String LoginID;
 		String Password;
 		Console cons = System.console();
@@ -52,7 +52,7 @@ public class MainProgram {
 			
 				}else {
 					Date date = new Date();
-					 if(checkIsStud.getAccessTimeStart().compareTo(date) < 0 &&  checkIsStud.getAccessTimeEnd().compareTo(date) > 0 ){
+					 if(LoginHandling.checkAccessPeriod(checkIsStud)){
 							isloginAsStud = true;
 							LoggedStudent =  checkIsStud;
 					 }else{
@@ -72,26 +72,26 @@ public class MainProgram {
 		}
 		
 		if(isloginAsAdmin == true) {
-			DisplayAdminScreen();
+			displayAdminScreen();
 		}else if(isloginAsStud == true) {
-			DisplayStudentScreen();
+			displayStudentScreen();
 		}
 	}
 	
 	public static void main(String[] args) {
 		
-		if(AdminRepo.GetAdmin().size() == 0 ) {
+		if(AdminRepo.getAdmin().size() == 0 ) {
 			System.out.print("Please initial an admin in User DB.");
 		}else {
 			
-			ProgramInterface();
+			programInterface();
 			
 		}
 		
 		
 	}
 	
-	public static void DisplayAdminScreen() {
+	public static void displayAdminScreen() {
 		System.out.println ("Successfully logged in! ");
 		System.out.println ("Welcome (Admin) " + LoggedAdmin.getFullName()+"\n");
 		
@@ -102,7 +102,7 @@ public class MainProgram {
 	}
 	
 	
-	public static void DisplayStudentScreen() {
+	public static void displayStudentScreen() {
 		System.out.println ("Successfully logged in! ");
 		System.out.println ("Welcome (Student) " + LoggedStudent.getFullName());
 

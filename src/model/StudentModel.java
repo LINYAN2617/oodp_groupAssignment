@@ -44,26 +44,26 @@ public class StudentModel extends UserModel {
 		return PhoneNumber;
 	}
 	
-	public void AddWaitListing(WaitListingModel wlist) {
+	public void addWaitListing(WaitListingModel wlist) {
 		WaitListing.add(wlist);
 		
 	}
-	public void AddAllocateListing(AllocatedListingModel alist) {
+	public void addAllocateListing(AllocatedListingModel alist) {
 		AllocateListing.add(alist);
 		
 	}
 	
-	public  ArrayList<WaitListingModel> GetWaitListing() {
+	public  ArrayList<WaitListingModel> getWaitListing() {
 		return WaitListing;
 		
 	}
-	public ArrayList<AllocatedListingModel> GetAllocateListing() {
+	public ArrayList<AllocatedListingModel> getAllocateListing() {
 		return AllocateListing;
 		
 		
 	}
 	
-	public void RemoveWaitListing(int CourseIndex) {	
+	public void removeWaitListing(int CourseIndex) {	
 		Iterator<WaitListingModel> iterator = WaitListing.iterator();
 
 		while (iterator.hasNext()){
@@ -74,7 +74,7 @@ public class StudentModel extends UserModel {
 		     }
 		 }
 	}
-	public void RemoveAllocateListing(int CourseIndex) {
+	public void removeAllocateListing(int CourseIndex) {
 	
 		Iterator<AllocatedListingModel> iterator = AllocateListing.iterator();
 

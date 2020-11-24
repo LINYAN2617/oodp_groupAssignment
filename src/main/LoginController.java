@@ -2,6 +2,7 @@ package main;
 import java.io.Console;
 import java.security.spec.KeySpec;
 import java.util.Base64;
+import java.util.Date;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -10,16 +11,17 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import DBRepo.AdminRepo;
-import DBRepo.StudRepo;
+import dbrepo.AdminRepo;
+import dbrepo.StudRepo;
 import model.StudentModel;
+import model.UserModel;
 import model.AdminModel;
 import main.MainProgram;
 
 public class LoginController {
 	
-	private static String secretKey = "tBJCPuoiynMYps8W";
-	private static String salt = "YxzDI5ie9uqGicjk";
+	private static final String SECRETKEY = "tBJCPuoiynMYps8W";
+	private static final String SALT = "YxzDI5ie9uqGicjk";
 	
 	public String getPasswordMasked(Console cons, String msg)
     {
@@ -45,7 +47,7 @@ public class LoginController {
 	        IvParameterSpec ivspec = new IvParameterSpec(iv);
 	         
 	        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-	        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), 65536, 256);
+	        KeySpec spec = new PBEKeySpec(SECRETKEY.toCharArray(), SALT.getBytes(), 65536, 256);
 	        SecretKey tmp = factory.generateSecret(spec);
 	        SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 	         
@@ -67,7 +69,7 @@ public class LoginController {
 	        IvParameterSpec ivspec = new IvParameterSpec(iv);
 	         
 	        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-	        KeySpec spec = new PBEKeySpec(secretKey.toCharArray(), salt.getBytes(), 65536, 256);
+	        KeySpec spec = new PBEKeySpec(SECRETKEY.toCharArray(), SALT.getBytes(), 65536, 256);
 	        SecretKey tmp = factory.generateSecret(spec);
 	        SecretKeySpec secretKey = new SecretKeySpec(tmp.getEncoded(), "AES");
 	         
@@ -85,13 +87,13 @@ public class LoginController {
 	
 		StudentModel returnresult = null;
 
-		 for(int i =0 ; i< StudRepo.GetStud().size(); i++) {
-				 if(StudRepo.GetStud().get(i).getUserID().equals(ID)) {
+		 for(int i =0 ; i< StudRepo.getStud().size(); i++) {
+				 if(StudRepo.getStud().get(i).getUserID().equals(ID)) {
 					 
 					 String encryptedString = encrypt(Pwd) ;
-
-					 if(StudRepo.GetStud().get(i).validatePwd(encryptedString)) {
-						 returnresult = StudRepo.GetStud().get(i);
+					 Date date = new Date();
+					 if(StudRepo.getStud().get(i).validatePwd(encryptedString)) {
+					 returnresult = StudRepo.getStud().get(i);
 						
 					 }
 				 }
@@ -106,14 +108,14 @@ public class LoginController {
 		
 		AdminModel returnresult = null;
 	
-		 for(int i =0 ; i< AdminRepo.GetAdmin().size(); i++) {
+		 for(int i =0 ; i< AdminRepo.getAdmin().size(); i++) {
 			
-			 if(AdminRepo.GetAdmin().get(i).getUserID().equals(ID)) {
+			 if(AdminRepo.getAdmin().get(i).getUserID().equals(ID)) {
 
 				 String encryptedString = encrypt(Pwd) ;
 
-				 if(AdminRepo.GetAdmin().get(i).validatePwd(encryptedString)) {
-					 returnresult = AdminRepo.GetAdmin().get(i);
+				 if(AdminRepo.getAdmin().get(i).validatePwd(encryptedString)) {
+					 returnresult = AdminRepo.getAdmin().get(i);
 					
 				 }
 			 }
@@ -130,7 +132,17 @@ public class LoginController {
 		MainProgram.LoggedStudent = null;
 		MainProgram.LoggedAdmin = null;
 		
-		MainProgram.ProgramInterface();
+		MainProgram.programInterface();
 	}
 	
+	public boolean checkAccessPeriod(UserModel Stud) {
+		boolean allow = false;
+		Date date = new Date();
+		 if(Stud.getAccessTimeStart().compareTo(date) < 0 &&  Stud.getAccessTimeEnd().compareTo(date) > 0 ){
+			
+			 allow = true;
+		 }
+		 
+		 return allow;
+	}
 }

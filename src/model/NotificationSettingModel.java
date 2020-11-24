@@ -21,13 +21,13 @@ public class NotificationSettingModel {
 	public String getSecondCredentialsDetail() {
 		return SecondCredentialsDetail;
 	}
-	public void SetNotificationType(String NotificationType) {
+	public void setNotificationType(String NotificationType) {
 		this.NotificationType = NotificationType;
 	}
-	public void SetFirstCredentialsDetail(String FirstCredentialsDetail) {
+	public void setFirstCredentialsDetail(String FirstCredentialsDetail) {
 		this.FirstCredentialsDetail = FirstCredentialsDetail;
 	}
-	public void SetSecondCredentialsDetail(String SecondCredentialsDetail) {
+	public void setSecondCredentialsDetail(String SecondCredentialsDetail) {
 		this.SecondCredentialsDetail = SecondCredentialsDetail;
 	}
 }

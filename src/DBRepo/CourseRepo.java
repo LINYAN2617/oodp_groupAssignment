@@ -1,15 +1,15 @@
-package DBRepo;
+package dbrepo;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import File.FileHandle;
+import file.FileHandle;
 import model.CourseModel;
 import model.DBContext;
 public class CourseRepo {
 
-	public static CourseModel GetCourseByIndexNumber(int courseIndex) {
+	public static CourseModel getCourseByIndexNumber(int courseIndex) {
 		
 		CourseModel CModel =null;
 		
@@ -20,13 +20,13 @@ public class CourseRepo {
 				CModel =  DBContext.CourseModelListing.get(i);
 				//course=CourseModelListing.get(i);
 				break;
-			
+				
 			}
 		}
         return CModel;
 	}
 	
-	public static CourseModel GetCourseByCourseCode(String CourseCode) {
+	public static CourseModel getCourseByCourseCode(String CourseCode) {
 		CourseModel CModel =null;
 		
         for (int i = 0 ; i < DBContext.CourseModelListing.size() ; i++) {
@@ -79,7 +79,7 @@ public class CourseRepo {
 			}
 
 		try {
-			FileHandle.write(DBContext.CourseFileName,alw);
+			FileHandle.write(DBContext.COURSEFILENAME,alw);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -1,4 +1,4 @@
-package DBRepo;
+package dbrepo;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import File.FileHandle;
-import model.AllocatedListingModel;
+import file.FileHandle;
 import model.DBContext;
 import model.WaitListingModel;
 
@@ -68,14 +67,14 @@ public class WaitListingRepo {
 			}
 
 		try {
-			FileHandle.write(DBContext.WLFileName,alw);
+			FileHandle.write(DBContext.WLFILENAME,alw);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public static WaitListingModel GetLastWaitListingByCourseIndex(int CourseIndex) {
+	public static WaitListingModel getLastWaitListingByCourseIndex(int CourseIndex) {
 		Date date = null;
 		WaitListingModel WModel = null;
 		try {
@@ -94,7 +93,7 @@ public class WaitListingRepo {
 		
 	}
 	
-	public static ArrayList<WaitListingModel> GetWaitListModelByCourseCode(String CourseCode) {
+	public static ArrayList<WaitListingModel> getWaitListModelByCourseCode(String CourseCode) {
 		ArrayList<WaitListingModel> Wlist = new ArrayList<WaitListingModel>();
 		
 		for(int i =0; i<DBContext.WaitListing.size(); i++) {
@@ -110,7 +109,7 @@ public class WaitListingRepo {
 		
 	}
 	
-	public static ArrayList<WaitListingModel> GetWaitListModelByCourseCodeByStudID(String CourseCode,String StudID) {
+	public static ArrayList<WaitListingModel> getWaitListModelByCourseCodeByStudID(String CourseCode,String StudID) {
 		ArrayList<WaitListingModel> Wlist = new ArrayList<WaitListingModel>();
 		
 		for(int i =0; i<DBContext.WaitListing.size(); i++) {

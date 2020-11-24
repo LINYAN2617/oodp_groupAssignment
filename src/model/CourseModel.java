@@ -79,7 +79,7 @@ public class CourseModel {
 		this.AU =AU;
 	}
 	
-	public ArrayList<TimeTableModel> GetTimeTableListing() {
+	public ArrayList<TimeTableModel> getTimeTableListing() {
 		return TimeTableList;
 		
 	}

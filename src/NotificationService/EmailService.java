@@ -1,4 +1,4 @@
-package NotificationService;
+package notificationservice;
 import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.Message;
@@ -9,7 +9,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import DBRepo.NotificationRepo;
+import dbrepo.NotificationRepo;
 import model.NotificationSettingModel;
 
 public class EmailService implements Notification {
@@ -57,7 +57,7 @@ public class EmailService implements Notification {
 
 	public ArrayList<String> getAuthDetails(String Type) {
 	
-		NotificationSettingModel nmodel = NotificationRepo.GetNotificationModelByType(Type);
+		NotificationSettingModel nmodel = NotificationRepo.getNotificationModelByType(Type);
 		ArrayList<String> credential = new ArrayList<String>();
 		if(nmodel != null) {
 			credential.add(nmodel.getFirstCredentialsDetail());

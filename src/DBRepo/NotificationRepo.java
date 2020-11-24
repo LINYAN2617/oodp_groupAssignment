@@ -1,11 +1,11 @@
-package DBRepo;
+package dbrepo;
 
 import model.DBContext;
 import model.NotificationSettingModel;
 
 public class NotificationRepo {
 	
-	public static NotificationSettingModel GetNotificationModelByType(String type) {
+	public static NotificationSettingModel getNotificationModelByType(String type) {
 		NotificationSettingModel NModel =null;
 		
         for (int i = 0 ; i < DBContext.NotificationSettingListing.size() ; i++) {

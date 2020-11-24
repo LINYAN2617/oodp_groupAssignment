@@ -1,11 +1,10 @@
-package DBRepo;
+package dbrepo;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import File.FileHandle;
-import model.CourseModel;
+import file.FileHandle;
 import model.DBContext;
 import model.TimeTableModel;
 
@@ -25,14 +24,14 @@ public class TimeTableRepo {
 	}
 	
 	
-	public static void Add(ArrayList<TimeTableModel> TimeTableList){
+	public static void add(ArrayList<TimeTableModel> TimeTableList){
 		for(int i = 0; i <TimeTableList.size(); i++){
 			DBContext.TimeTableListing.add(TimeTableList.get(i));
 		}
 		save(DBContext.TimeTableListing);	
 	}
 	
-	public static void Update(ArrayList<TimeTableModel> OldTimeTableList,ArrayList<TimeTableModel> NewTimeTableList ){
+	public static void update(ArrayList<TimeTableModel> OldTimeTableList,ArrayList<TimeTableModel> NewTimeTableList ){
 		for(int i = 0; i <OldTimeTableList.size(); i++){
 			DBContext.TimeTableListing.remove(OldTimeTableList.get(i));
 		}
@@ -68,7 +67,7 @@ public class TimeTableRepo {
 			}
 
 		try {
-			FileHandle.write(DBContext.TBFileName,alw);
+			FileHandle.write(DBContext.TBFILENAME,alw);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

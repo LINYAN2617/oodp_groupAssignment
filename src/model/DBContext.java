@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.StringTokenizer;
 
-import DBRepo.AllocatedListingRepo;
-import DBRepo.TimeTableRepo;
-import DBRepo.WaitListingRepo;
-import File.FileHandle;
+import dbrepo.AllocatedListingRepo;
+import dbrepo.TimeTableRepo;
+import dbrepo.WaitListingRepo;
+import file.FileHandle;
 public class DBContext {
 	
 	public static FileHandle File= new FileHandle();
@@ -21,25 +21,25 @@ public class DBContext {
 	public static ArrayList<TimeTableModel> TimeTableListing;
 	public static ArrayList<NotificationSettingModel> NotificationSettingListing;
 	
-	public static final String WLFileName = "FileDB/WaitingListing.txt"; 
-	public static final String ALFileName = "FileDB/AllocatedListing.txt"; 
-	public static final String TBFileName = "FileDB/TimeTable.txt"; 
-	public static final String CourseFileName = "FileDB/Course.txt"; 
-	public static final String UserFileName = "FileDB/User.txt"; 
-	public static final String NotificationFile = "FileDB/NotificationSetting.txt"; 
+	public static final String WLFILENAME = "FileDB/WaitingListing.txt"; 
+	public static final String ALFILENAME = "FileDB/AllocatedListing.txt"; 
+	public static final String TBFILENAME = "FileDB/TimeTable.txt"; 
+	public static final String COURSEFILENAME = "FileDB/Course.txt"; 
+	public static final String USERFILENAME = "FileDB/User.txt"; 
+	public static final String NOTIFICATIONILENAME = "FileDB/NotificationSetting.txt"; 
 	public static final String SEPARATOR = "|";
 	
 	public DBContext() {
 		try {
 			
-			WaitListing = readWaitListing(WLFileName);
-			AllocatedListing = readAllocateListing(ALFileName);
-			TimeTableListing = readTimeTableListing(TBFileName);
-			CourseModelListing =  readCourseListing(CourseFileName);
-			NotificationSettingListing =  readNotificationSettingListing(NotificationFile);
+			WaitListing = readWaitListing(WLFILENAME);
+			AllocatedListing = readAllocateListing(ALFILENAME);
+			TimeTableListing = readTimeTableListing(TBFILENAME);
+			CourseModelListing =  readCourseListing(COURSEFILENAME);
+			NotificationSettingListing =  readNotificationSettingListing(NOTIFICATIONILENAME);
 			
 			ArrayList readuser = new ArrayList();
-			readuser = readUsers(UserFileName);
+			readuser = readUsers(USERFILENAME);
 			student = (ArrayList<StudentModel>) readuser.get(1);
 			admin = (ArrayList<AdminModel>) readuser.get(0);
 			

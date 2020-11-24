@@ -1,11 +1,11 @@
-package DBRepo;
+package dbrepo;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import File.FileHandle;
+import file.FileHandle;
 import model.AllocatedListingModel;
 import model.DBContext;
 
@@ -42,7 +42,7 @@ public class AllocatedListingRepo {
 			}
 
 		try {
-			FileHandle.write(DBContext.ALFileName,alw);
+			FileHandle.write(DBContext.ALFILENAME,alw);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,7 +96,7 @@ public class AllocatedListingRepo {
 		return AList;
 	}
 	
-	public static int GetTakenSlotByCourseIndex(int courseIndex) {
+	public static int getTakenSlotByCourseIndex(int courseIndex) {
 		int taken = 0;
 			 for (int i = 0 ; i < DBContext.AllocatedListing.size() ; i++) {
 			        

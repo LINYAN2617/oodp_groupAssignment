@@ -19,8 +19,6 @@ import model.CourseModel;
 import model.StudentModel;
 import model.TimeTableModel;
 public class AdminController{
-
-
 	private static AdminModel LoggedAdmin;
 	private LoginController LoginHandle = new LoginController();
 
@@ -246,7 +244,7 @@ public class AdminController{
 			CourseModel newCourse = new CourseModel();
 			Scanner sc = new Scanner(System.in);
 			System.out.println(".............Add New Course....... ");
-			System.out.println("Index Number: "+newindexNumber);
+			System.out.println("Index Number: " + newindexNumber);
 			newCourse.setIndexNumber(newindexNumber);
 			
 			System.out.println("CourseCode:");
@@ -669,7 +667,36 @@ public class AdminController{
 		public void addStudent() {
 			Scanner sc = new Scanner(System.in);
 			System.out.println("..............Add a Student.....................");
+			System.out.println("MatricNumber:");
+			String MatricNumber = sc.next();
+			System.out.println("UserID:");
+			String UserID = sc.next();
+			boolean update=true;
+			
+			for(int i=0; i<DBContext.student.size();i++) {
+				if (DBContext.student.get(i).getMatricNumber().equals(MatricNumber)&&DBContext.student.get(i).getUserID().equals(UserID)) {
+					System.out.println("MatricNumber and UserID is same to another account! This Student already exists.");
+					update=false;
+					break;
+				}
+				else if (DBContext.student.get(i).getMatricNumber().equals(MatricNumber)) {
+					System.out.println("This MatricNumber already exists.");
+					update=false;
+					break;
+				}
+				else if (DBContext.student.get(i).getUserID().equals(UserID)) {
+					System.out.println("This UserID already exists.");
+					update=false;
+					break;
+				}
+			}
+			if (!update) 
+			{
 
+				return ;
+			}
+			System.out.println("Password:");
+			String Password = LoginHandle.encrypt(sc.next());
 			System.out.println("FirstName:");
 			String FirstName;
 			FirstName = sc.next();
@@ -687,12 +714,7 @@ public class AdminController{
 			String PhoneNumber = sc.next();
 			System.out.println("Email:");
 			String Email = sc.next();
-			System.out.println("MatricNumber:");
-			String MatricNumber = sc.next();
-			System.out.println("UserID:");
-			String UserID = sc.next();
-			System.out.println("Password:");
-			String Password = LoginHandle.encrypt(sc.next());
+			
 			char UserType = 'S' ;
 			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			
@@ -702,7 +724,11 @@ public class AdminController{
 			newStudent.setEmail(Email);
 			newStudent.setMatricNumber(MatricNumber);
 			newStudent.setPhoneNumber(PhoneNumber);
+			
 			StudRepo.add(newStudent);
+			
+
+			System.out.println("Student successfully Added!\n");
 			
 			System.out.println(
 					"1. Add other student\n"+
@@ -710,7 +736,7 @@ public class AdminController{
 					"Please select an option:" );
 			int select = validationInt();
 			if (select == 2) {
-				StartAdminPage();
+				return;
 			}else if(select == 1) {
 				addStudent();
 			}
@@ -727,31 +753,42 @@ public class AdminController{
 		ArrayList<AllocatedListingModel> StuList=new ArrayList<AllocatedListingModel>();
 		
 		Scanner sc = new Scanner(System.in);
-		System.out.println("Please enter the course index number:");
+		System.out.println("Please enter the course index number (-1 to return):");
 		int IndexNumber=sc.nextInt();
-		if(checkIndex(IndexNumber) == false) {
-			checkSlot(); 
+		
+		
+		if(IndexNumber == -1) {
+			return;
+		}else {
+			
+			if(checkIndex(IndexNumber) == false) {
+				checkSlot(); 
+			}	else {
+				StuList=AllocatedListingRepo.readAllocateListingByCourseIndex(IndexNumber);
+				CourseModel CModel = CourseRepo.getCourseByIndexNumber(IndexNumber);
+				int slot;
+				slot= CModel.getVacancy()-StuList.size();
+				System.out.println("The amount of slot available for this course: "+ slot+"\n");
+			}
 		}
-		else {
-		StuList=AllocatedListingRepo.readAllocateListingByCourseIndex(IndexNumber);
-		CourseModel CModel = CourseRepo.getCourseByIndexNumber(IndexNumber);
-		int slot;
-		slot= CModel.getVacancy()-StuList.size();
-		System.out.println("The amount of slot available for this course: "+ slot+"\n");
-		}
+	
 		System.out.println(
 				"1. Check Other Index Number\n"+
 				"2. Back\n"+
 				"Please select an option:" );
-		int select7 = sc.nextInt();
-		switch(select7) {
-		case 1:
+		
+		int select = validationInt();
+		if (select == 2) {
+			return;
+		}else if(select == 1) {
 			checkSlot();
-			break;
-		case 2:
-			StartAdminPage();
-			break;
 		}
+		while (select == -2) {
+			System.out.println("Invalid input, re-enter your option: ");
+			select = validationInt();
+		}
+		
+		
 	}
 	
 	public void printSLByIndex() {
@@ -765,7 +802,7 @@ public class AdminController{
 			int IndexNumber =0;
 			while (checkinput == false) {
 				System.out.println("Please enter the course index number:");
-				IndexNumber=sc.nextInt();
+				IndexNumber=validationInt();
 				
 				if(checkIndex(IndexNumber) == true) {
 					checkinput = true;
@@ -797,15 +834,15 @@ public class AdminController{
 					"1. Check Other Index Number\n"+
 					"2. Back\n"+
 					"Please select an option:" );
-			int select7 = sc.nextInt();
-			switch(select7) {
-			case 1:
+						
+			int select = validationInt();
+			if (select == 2) {
+				return;
+			}else if(select == 1) {
 				printSLByIndex();
-				break;
-			case 2:
-				StartAdminPage();
-				break;
 			}
+			
+			
 		}
 		
 			
@@ -818,20 +855,20 @@ public class AdminController{
 
 			Scanner sc = new Scanner(System.in);
 			
-			boolean checkinput = false;
+			boolean checkCourseCode = false;
 			String courseCode = "";
-			while (checkinput == false) {
+			while (checkCourseCode == false) {
 				System.out.println("Please enter the course code:");
 				courseCode=sc.next();
 				
-				if(checkCusCode(courseCode) == true) {
-					checkinput = true;
+				if(checkCusCodeExist(courseCode) == true) {
+					checkCourseCode = true;
 				}
 				
 			}
 			
 			
-			if(checkinput) {
+			if(checkCourseCode) {
 				StuList=AllocatedListingRepo.readAllocateListingByCourseCode(courseCode);
 				for (int i=0;i<StuList.size();i++) {
 					StuIDList.add(StuList.get(i).getUserID());
@@ -855,15 +892,15 @@ public class AdminController{
 					"1. Check Other Course Code\n"+
 					"2. Back\n"+
 					"Please select an option:" );
-			int select7 = sc.nextInt();
-			switch(select7) {
-			case 1:
+				
+			int select = validationInt();
+			if (select == 2) {
+				return;
+			}else if(select == 1) {
 				printSLByCour();
-				break;
-			case 2:
-				StartAdminPage();
-				break;
 			}
+			
+			
 		}
 		
 		public boolean checkIndex(int CusIndexnumber) {
@@ -879,7 +916,7 @@ public class AdminController{
 			return result;
 		}
 		
-		public boolean checkCusCode(String courseCode) {
+		public boolean checkCusCodeExist(String courseCode) {
 			CourseModel CusMode = CourseRepo.getCourseByCourseCode(courseCode);
 			boolean result;
 			if(CusMode == null) {
